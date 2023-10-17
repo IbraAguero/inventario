@@ -21,7 +21,7 @@ export const getAllUsers = async (req, res) => {
 // @route POST /users
 // @access Privado
 export const createNewUser = async (req, res) => {
-  const { username, password, email, rol } = req.validData;
+  const { name, lastName, password, email, rol } = req.validData;
 
   // Comprobar si ya existe el nombre de usuario
   const duplicate = await User.findOne({ email })
@@ -37,7 +37,8 @@ export const createNewUser = async (req, res) => {
   const hashedPwd = await bcrypt.hash(password, 10); // salt rounds
 
   const newUser = new User({
-    username,
+    name,
+    lastName,
     email,
     rol,
     password: hashedPwd,
@@ -48,7 +49,7 @@ export const createNewUser = async (req, res) => {
   if (userSaved) {
     // creado
     res.status(201).json({
-      message: `Nuevo usuario ${username} creado`,
+      message: `El usuario ${name} ha sido creado`,
       newUser: userSaved,
     });
   } else {
@@ -60,12 +61,12 @@ export const createNewUser = async (req, res) => {
 // @route PATCH /users
 // @access Privado
 export const updateUser = async (req, res) => {
-  const { id, username, roles, active, password } = req.body;
+  const { id, name, lastName, roles, active, password } = req.body;
 
   // Confirmar los datos
   if (
     !id ||
-    !username ||
+    !name ||
     !Array.isArray(roles) ||
     !roles.length ||
     typeof active !== 'boolean'

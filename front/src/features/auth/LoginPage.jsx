@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, NavLink } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from './authSlice';
 import { useLoginMutation, useSendLogoutMutation } from './authApiSlice';
 import usePersist from '../../hooks/usePersist';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, FormProvider } from 'react-hook-form';
 import {
   Alert,
   Box,
@@ -16,6 +16,7 @@ import {
   IconButton,
   InputAdornment,
   InputLabel,
+  Link,
   OutlinedInput,
   TextField,
   Typography,
@@ -23,9 +24,11 @@ import {
 import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import useAuth from '../../hooks/useAuth';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../theme';
+import useTitle from '../../hooks/useTitle';
+import PasswordField from '../../components/fields/PasswordField';
+import { TextFieldCustom } from '../../components/fields/TextFieldCustom';
 
 const schema = yup.object().shape({
   email: yup
@@ -36,6 +39,8 @@ const schema = yup.object().shape({
 });
 
 const LoginPage = () => {
+  useTitle('Login | Inventario');
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const theme = useTheme();
@@ -47,16 +52,18 @@ const LoginPage = () => {
   };
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    defaultValues: { email: '', password: '' },
+  });
+
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     watch,
-  } = useForm({
-    resolver: yupResolver(schema),
-    defaultValues: { email: '', password: '' },
-  });
+  } = methods;
 
   const [login, { isLoading }] = useLoginMutation();
   const [errMsg, setErrMsg] = useState('');
@@ -130,77 +137,66 @@ const LoginPage = () => {
             ingrese para continuar
           </Typography>
         </Box>
-        <form onSubmit={onSubmit}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            {errMsg && <Alert severity="error">{errMsg}</Alert>}
-            <Controller
-              control={control}
-              name="email"
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  fullWidth
-                  label="Email"
-                  autoComplete="off"
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
-                />
-              )}
-            />
-
-            <Controller
-              control={control}
-              name="password"
-              render={({ field }) => (
-                <FormControl
-                  variant="outlined"
-                  error={!!errors.password}
-                  {...field}
-                  //helperText={errors.email?.message}
-                >
-                  <InputLabel>Contraseña</InputLabel>
-                  <OutlinedInput
-                    type={showPassword ? 'text' : 'password'}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
-                        >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                    label="Contraseña"
+        <FormProvider {...methods}>
+          <form onSubmit={onSubmit}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {errMsg && <Alert severity="error">{errMsg}</Alert>}
+              <TextFieldCustom name="email" label="Email" autoComplete="off" />
+              {/* <Controller
+                control={control}
+                name="email"
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    fullWidth
+                    label="Email"
+                    autoComplete="off"
+                    error={!!errors.email}
+                    helperText={errors.email?.message}
                   />
-                  {errors.password && (
-                    <FormHelperText>{errors.password.message}</FormHelperText>
-                  )}
-                </FormControl>
-              )}
-            />
-            <label htmlFor="persist">
-              <Checkbox
-                id="persist"
-                onChange={handleToggle}
-                checked={persist}
-              />
-              Mantener sesion
-            </label>
-            <LoadingButton
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 2, mb: 2 }}
-              disabled={isSubmitting}
-              loading={isLoading}
-            >
-              Iniciar Sesión
-            </LoadingButton>
-          </Box>
-        </form>
+                )}
+              /> */}
+              {/* <Controller
+                control={control}
+                name="password"
+                render={({ field }) => (
+                  <PasswordField
+                    label="Contraseña"
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={!!errors.password}
+                    helperText={errors.password?.message}
+                  />
+                )}
+              /> */}
+              <PasswordField name="password" label="Contraseña" />
+              <label htmlFor="persist">
+                <Checkbox
+                  id="persist"
+                  onChange={handleToggle}
+                  checked={persist}
+                />
+                Mantener sesion
+              </label>
+              <LoadingButton
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mb: 2 }}
+                disabled={isSubmitting}
+                loading={isLoading}
+              >
+                Iniciar Sesión
+              </LoadingButton>
+            </Box>
+          </form>
+        </FormProvider>
+        <Typography textAlign="center">
+          Olvidaste tu contraseña?{' '}
+          <Link component={NavLink} to="/recuperar-contraseña">
+            Recuperar contraseña
+          </Link>
+        </Typography>
       </Box>
     </Box>
   );

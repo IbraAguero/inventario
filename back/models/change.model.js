@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 
 const changeSchema = new mongoose.Schema({
-  fecha: {
+  date: {
     type: Date,
     default: Date.now,
   },
-  usuario: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
   },
-  valores: [
+  values: [
     {
       campo: {
         type: String,

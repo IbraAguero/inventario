@@ -9,7 +9,7 @@ const typeSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['impresora', 'monitor'],
+    enum: ['impresora', 'monitor', 'ram'],
     required: true,
   },
 });

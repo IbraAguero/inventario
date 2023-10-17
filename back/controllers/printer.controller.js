@@ -20,6 +20,7 @@ export const getPrinters = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
 export const getPrinter = async (req, res) => {
   try {
     const id = req.params.id;
@@ -109,7 +110,7 @@ export const createPrinter = async (req, res) => {
       order,
       mandated,
       comment,
-      createdBy: req.user.id,
+      createdBy: req.userId,
     });
     const savedPrinter = await newPrinter.save();
 
@@ -206,7 +207,81 @@ export const updatePrinter = async (req, res) => {
         .status(400)
         .json({ message: 'El nroinventario ya esta en uso' });
 
-    const printer = await Printer.findByIdAndUpdate(
+    const printer = await Printer.findById(id);
+
+    if (!printer)
+      return res.status(404).json({ message: 'Impresora no encontrada' });
+
+    const change = {
+      user: req.userId,
+      values: [],
+    };
+
+    if (nroinventario !== printer.nroinventario) {
+      change.values.push({
+        field: 'Nro Inventario',
+        oldValue: printer.nroinventario,
+        newValue: nroinventario,
+      });
+      printer.nroinventario = nroinventario;
+    }
+
+    if (place !== printer.place.toString()) {
+      const oldPlace = await Place.findById(printer.place);
+      const newPlace = await Place.findById(place);
+
+      change.values.push({
+        field: 'Lugar',
+        oldValue: oldPlace.name,
+        newValue: newPlace.name,
+      });
+      printer.place = place;
+    }
+
+    if (state !== printer.state.toString()) {
+      const oldState = await State.findById(printer.state);
+      const newState = await State.findById(state);
+
+      change.values.push({
+        field: 'Estado',
+        oldValue: oldState.name,
+        newValue: newState.name,
+      });
+      printer.state = state;
+    }
+
+    if (mandated !== printer.mandated) {
+      change.values.push({
+        field: 'Encargado',
+        oldValue: printer.mandated,
+        newValue: mandated,
+      });
+      printer.mandated = mandated;
+    }
+
+    if (comment !== printer.comment) {
+      change.values.push({
+        field: 'Comentario',
+        oldValue: printer.comment,
+        newValue: comment,
+      });
+      printer.comment = comment;
+    }
+
+    if (change.values.length > 0) {
+      printer.changes.push(change);
+    }
+
+    printer.nroserie = nroserie;
+    printer.maker = maker;
+    printer.model = model;
+    printer.type = type;
+    printer.supplier = supplier;
+    printer.order = order;
+
+    await printer.save();
+
+    /* const printer = await Printer.findByIdAndUpdate(
       id,
       {
         nroinventario,
@@ -227,7 +302,7 @@ export const updatePrinter = async (req, res) => {
     );
 
     if (!printer)
-      return res.status(404).json({ message: 'Impresora no encontrada' });
+      return res.status(404).json({ message: 'Impresora no encontrada' }); */
 
     return res
       .status(201)

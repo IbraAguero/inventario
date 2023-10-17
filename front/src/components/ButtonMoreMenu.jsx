@@ -46,7 +46,12 @@ const ButtonMoreMenu = ({ id, name, deleteAction }) => {
         <MoreVertIcon />
       </IconButton>
       <StyledMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
-        <MenuItem onClick={handleMore}>
+        <MenuItem
+          component={Link}
+          to={`${id}`}
+          onClick={openModal}
+          state={{ background: location }}
+        >
           <FeedIcon />
           Ver mas
         </MenuItem>

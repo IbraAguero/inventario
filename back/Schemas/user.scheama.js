@@ -1,7 +1,8 @@
 import { z } from 'zod';
 
 export const createUserSchema = z.object({
-  username: z.string({ required_error: 'Campo requerido' }),
+  name: z.string({ required_error: 'Campo requerido' }),
+  lastName: z.string({ required_error: 'Campo requerido' }),
   email: z
     .string({ required_error: 'Campo requerido' })
     .email({ message: 'El email no es valido' }),

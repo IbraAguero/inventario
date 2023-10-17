@@ -16,16 +16,22 @@ import {
 import ButtonMoreMenu from '../../components/ButtonMoreMenu';
 import StyledSearchInput from '../../components/styledComponents/StyledSearchInput';
 import TablePrinter from './TablePrinter';
+import useTitle from '../../hooks/useTitle';
 
 const PagePrinter = () => {
+  useTitle('Impresoras | Inventario');
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { openModal } = useModal();
   const location = useLocation();
 
-  const { data: printers, isError, isLoading } = useGetPrintersQuery();
+  const { data, isError, isLoading } = useGetPrintersQuery('printersList', {
+    pollingInterval: 30000,
+    refetchOnFocus: true,
+  });
 
-  const printerData = useSelector(selectAllPrinters);
+  const printers = data?.ids.map((id) => data?.entities[id]);
 
   const [deletePrinter] = useDeletePrinterMutation();
 
@@ -150,6 +156,7 @@ const PagePrinter = () => {
       },
     },
   ];
+
   const apiRef = useGridApiRef();
   const [searchText, setSearchText] = useState('');
 
@@ -192,7 +199,7 @@ const PagePrinter = () => {
       <Box
         bgcolor={colors.primary[700]}
         margin={1}
-        marginTop={4}
+        marginTop={3}
         borderRadius={3}
         boxShadow={8}
         padding="5px"
@@ -246,7 +253,7 @@ const PagePrinter = () => {
           flex={15}
         >
           <TablePrinter
-            data={printerData || []}
+            data={printers || []}
             header={columns}
             apiRef={apiRef}
             isLoading={isLoading}

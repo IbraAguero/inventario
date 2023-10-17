@@ -47,3 +47,12 @@
 20230906	18:52:06	428331ee-9a08-4d6d-b12e-b7cca29ff77f	Error: Not allowed by CORS	OPTIONS	/auth	http://127.0.0.1:5173
 20230906	18:52:06	0eac03e3-15b4-4b56-aa19-c93826e5cecc	Error: Not allowed by CORS	OPTIONS	/auth	http://127.0.0.1:5173
 20230906	18:52:39	5064c9b2-9b78-49ff-9a94-5f29136c0b65	Error: Not allowed by CORS	OPTIONS	/auth	http://127.0.0.1:5173
+20230925	14:32:53	baae96b1-437d-41ac-bfae-645ff562628d	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:48:54	45da29b6-a8ab-4e1d-8e38-36efc972aad8	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:49:03	dd199946-4317-428d-890d-668813456706	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:49:20	e7f8d96c-d8fa-4b4b-a1fb-e8e812e97952	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:49:53	e01e3abb-c833-4e24-a8a6-4c3a833146d5	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:50:58	1c9593bc-ea9f-4f4e-b33f-49262a0355c5	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:53:07	ffb0b163-db9f-4ffe-9110-c5ae1db07340	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	11:57:24	a6179306-947a-4ea3-9c6b-f52bfd03aa25	Error: Not allowed by CORS	GET	/ws	http://localhost:3000
+20230928	12:05:57	f96cbe36-ca3f-4deb-8b4d-5865431ff010	Error: Not allowed by CORS	GET	/ws	http://localhost:3000

@@ -20,6 +20,9 @@ import { tokens } from '../theme';
 import { useSendLogoutMutation } from '../features/auth/authApiSlice';
 import { setMode } from '../app/globalSlice';
 import { StyledMenu } from './styledComponents/StyledMenu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import useAuth from '../hooks/useAuth';
 
 const pages = [
   {
@@ -46,11 +49,17 @@ const pages = [
     label: 'Redes',
     route: '/redes',
   },
+  {
+    label: 'Componentes',
+    route: '/componentes',
+  },
 ];
 
 function NewNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const { isAdministrador } = useAuth();
 
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -76,6 +85,11 @@ function NewNavbar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  const handleUsers = () => {
+    handleCloseUserMenu();
+    navigate('/usuarios');
   };
 
   const handleLogout = () => {
@@ -234,7 +248,14 @@ function NewNavbar() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                {isAdministrador && (
+                  <MenuItem onClick={handleUsers}>
+                    <GroupOutlinedIcon />
+                    <Typography textAlign="center">Usuarios</Typography>
+                  </MenuItem>
+                )}
                 <MenuItem onClick={handleLogout}>
+                  <LogoutIcon />
                   <Typography textAlign="center">Cerrar sesion</Typography>
                 </MenuItem>
               </StyledMenu>

@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { Resend } from 'resend';
 
 // @desc Login
 // @route POST /auth
@@ -37,7 +38,7 @@ export const login = async (req, res) => {
   const accessToken = jwt.sign(
     {
       UserInfo: {
-        username: foundUser.username,
+        name: foundUser.name,
         id: foundUser._id,
         rol: foundUser.rol,
       },
@@ -47,7 +48,7 @@ export const login = async (req, res) => {
   );
 
   const refreshToken = jwt.sign(
-    { username: foundUser.username },
+    { name: foundUser.name, id: foundUser._id },
     process.env.REFRESH_TOKEN_SECRET,
     { expiresIn: '7d' }
   );
@@ -79,10 +80,7 @@ export const refresh = (req, res) => {
     process.env.REFRESH_TOKEN_SECRET,
     async (err, decoded) => {
       if (err) return res.status(403).json({ message: 'Prohibido' });
-
-      const foundUser = await User.findOne({
-        username: decoded.username,
-      }).exec();
+      const foundUser = await User.findById(decoded.id).exec();
 
       if (!foundUser) return res.status(401).json({ message: 'No autorizado' });
 
@@ -111,4 +109,90 @@ export const logout = (req, res) => {
   if (!cookies?.jwt) return res.sendStatus(204); // Sin contenido
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'None', secure: true });
   res.json({ message: 'Cookie eliminada' });
+};
+
+export const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.validData;
+
+    const userFound = await User.findOne({ email });
+    if (!userFound) {
+      return res
+        .status(400)
+        .json({ message: 'El correo electronico no esta registrado' });
+    }
+
+    const tokenData = {
+      email: userFound.email,
+      userId: userFound._id,
+    };
+
+    const token = jwt.sign(
+      { token: tokenData },
+      process.env.FORGETPASSWORD_TOKEN_SECRET,
+      {
+        expiresIn: '30m',
+      }
+    );
+
+    const forgetUrl = `http://localhost:5173/cambiar-contraseña?token=${token}`;
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
+    await resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: email,
+      subject: 'Inventario - Cambiar contraseña',
+      html: `<a href=${forgetUrl}>Cambiar contraseña</a>`,
+    });
+
+    return res.status(200).json({ message: 'Correo enviado exitosamente' });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export const changePassword = async (req, res) => {
+  try {
+    const { newPassword, confirmPassword } = req.validData;
+
+    const { token } = req.headers;
+    if (!token) {
+      return res.status(400).json({ message: 'No autorizado' });
+    }
+
+    try {
+      const isTokenValid = jwt.verify(
+        token,
+        process.env.FORGETPASSWORD_TOKEN_SECRET
+      );
+
+      const { token: data } = isTokenValid;
+      const userFound = await User.findById(data.userId);
+
+      if (!userFound) {
+        return res.status(400).json({ message: 'No existe el usuario' });
+      }
+
+      if (newPassword !== confirmPassword) {
+        return res
+          .status(400)
+          .json({ message: 'Las contraseñas no coinciden' });
+      }
+
+      const passwordHash = await bcrypt.hash(newPassword, 10);
+
+      userFound.password = passwordHash;
+
+      await userFound.save();
+
+      return res
+        .status(200)
+        .json({ message: 'La contraseña se ha cambiada correctamente' });
+    } catch (error) {
+      return res.status(400).json({ message: error.message });
+    }
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
 };

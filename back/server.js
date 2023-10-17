@@ -10,6 +10,7 @@ import corsOptions from './config/corsOptions.js';
 import authRoutes from './routes/auth.routes.js';
 import userRoutes from './routes/user.routes.js';
 import printerRoutes from './routes/printer.routes.js';
+import computerRoutes from './routes/computer.routes.js';
 import makersRoutes from './routes/maker.routes.js';
 import modelsRoutes from './routes/model.routes.js';
 import typesRoutes from './routes/type.routes.js';
@@ -22,7 +23,7 @@ import suppliersRoutes from './routes/supplier.routes.js';
 
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 3500;
+const PORT = process.env.PORT || 3000;
 
 console.log(process.env.NODE_ENV);
 
@@ -48,6 +49,7 @@ app.use(statesRoutes);
 app.use(placesRoutes);
 app.use(suppliersRoutes);
 app.use('/impresoras', printerRoutes);
+app.use('/computadoras', computerRoutes);
 //app.use('/notes', noteRoutes);
 
 /* app.all('*', (req, res) => {

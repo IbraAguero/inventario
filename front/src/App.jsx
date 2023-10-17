@@ -1,5 +1,4 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
-import useTitle from './hooks/useTitle';
 import LoginPage from './features/auth/LoginPage';
 import PersistLogin from './features/auth/PersistLogin';
 import ComputerPage from './features/computers/ComputerPage';
@@ -10,7 +9,7 @@ import NetworkPage from './features/networks/NetworkPage';
 import RequireAuth from './features/auth/RequireAuth';
 import HomePage from './features/home/HomePage';
 import DashLayout from './components/DashLayout';
-import Layout from './components/Layout';
+//import Layout from './components/Layout';
 import { ROLES } from './utils/roles';
 import { esES } from '@mui/x-data-grid';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
@@ -18,10 +17,16 @@ import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
 import { themeSettings } from './theme';
 import FormPrinter from './features/printers/FormPrinter';
+import FormUser from './features/users/FormUser';
 import { ConfirmProvider } from 'material-ui-confirm';
+import ForgetPassword from './features/auth/ForgetPassword';
+import ChangePassword from './features/auth/ChangePassword';
+import MoreInfo from './features/printers/MoreInfo';
+import Prefetch from './features/auth/Prefetch';
+import UserPage from './features/users/UserPage';
+import ComponentsPage from './features/components/ComponentesPage';
 
 function App() {
-  useTitle('Inventario');
   const mode = useSelector((state) => state.global.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode), esES), [mode]);
 
@@ -66,33 +71,57 @@ function App() {
             {/* <Route path="/" element={<Layout />}>
       </Route> */}
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/recuperar-contraseña" element={<ForgetPassword />} />
+            <Route path="/cambiar-contraseña" element={<ChangePassword />} />
 
             {/* private routes */}
             <Route element={<PersistLogin />}>
-              <Route element={<RequireAuth />}>
-                <Route element={<DashLayout />}>
-                  <Route index element={<HomePage />} />
+              <Route
+                element={
+                  <RequireAuth allowedRoles={[...Object.values(ROLES)]} />
+                }
+              >
+                <Route element={<Prefetch />}>
+                  <Route element={<DashLayout />}>
+                    <Route index element={<HomePage />} />
 
-                  <Route path="computadoras">
-                    <Route index element={<ComputerPage />} />
-                  </Route>
+                    <Route path="computadoras">
+                      <Route index element={<ComputerPage />} />
+                    </Route>
 
-                  <Route path="monitores">
-                    <Route index element={<MonitorPage />} />
-                  </Route>
+                    <Route path="monitores">
+                      <Route index element={<MonitorPage />} />
+                    </Route>
 
-                  <Route path="impresoras">
-                    <Route index element={<PrinterPage />} />
-                    <Route path="agregar" element={<FormPrinter />} />
-                    <Route path="editar/:id" element={<FormPrinter />} />
-                  </Route>
+                    <Route path="impresoras">
+                      <Route index element={<PrinterPage />} />
+                      <Route path=":id" element={<MoreInfo />} />
+                      <Route path="agregar" element={<FormPrinter />} />
+                      <Route path="editar/:id" element={<FormPrinter />} />
+                    </Route>
 
-                  <Route path="perifericos">
-                    <Route index element={<PeripheralPage />} />
-                  </Route>
+                    <Route path="perifericos">
+                      <Route index element={<PeripheralPage />} />
+                    </Route>
 
-                  <Route path="redes">
-                    <Route index element={<NetworkPage />} />
+                    <Route path="redes">
+                      <Route index element={<NetworkPage />} />
+                    </Route>
+
+                    <Route path="componentes">
+                      <Route index element={<ComponentsPage />} />
+                    </Route>
+
+                    <Route
+                      element={
+                        <RequireAuth allowedRoles={[ROLES.Administrador]} />
+                      }
+                    >
+                      <Route path="usuarios">
+                        <Route index element={<UserPage />} />
+                        <Route path="agregar" element={<FormUser />} />
+                      </Route>
+                    </Route>
                   </Route>
                 </Route>
               </Route>
@@ -101,8 +130,12 @@ function App() {
           {background && (
             <Routes>
               <Route path="impresoras">
+                <Route path=":id" element={<MoreInfo />} />
                 <Route path="agregar" element={<FormPrinter />} />
                 <Route path="editar/:id" element={<FormPrinter />} />
+              </Route>
+              <Route path="usuarios">
+                <Route path="agregar" element={<FormUser />} />
               </Route>
             </Routes>
           )}

@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { Controller, useFormContext } from 'react-hook-form';
 
-const SelectFieldCustom = ({ name, label, data, ...props }) => {
+export const SelectFieldCustom = ({ name, label, data, ...props }) => {
   const { control } = useFormContext();
 
   return (
@@ -16,7 +16,7 @@ const SelectFieldCustom = ({ name, label, data, ...props }) => {
       control={control}
       render={({ field, fieldState }) => {
         const selectedValue = field.value;
-        const isValueValid = data.some((item) => item.id === selectedValue);
+        const isValueValid = data?.some((item) => item.id === selectedValue);
         const fieldValue = isValueValid ? selectedValue : '';
         return (
           <FormControl error={!!fieldState.error} fullWidth>
@@ -43,4 +43,3 @@ const SelectFieldCustom = ({ name, label, data, ...props }) => {
     />
   );
 };
-export default SelectFieldCustom;

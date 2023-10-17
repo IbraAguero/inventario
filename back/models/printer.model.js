@@ -62,8 +62,28 @@ const printerSchema = new mongoose.Schema(
     },
     changes: [
       {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Change',
+        date: {
+          type: Date,
+          default: Date.now,
+        },
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+        },
+        values: [
+          {
+            _id: false,
+            field: {
+              type: String,
+            },
+            oldValue: {
+              type: String,
+            },
+            newValue: {
+              type: String,
+            },
+          },
+        ],
       },
     ],
   },
@@ -78,7 +98,5 @@ const printerSchema = new mongoose.Schema(
   },
 });
  */
-
-
 
 export default mongoose.model('Printer', printerSchema);

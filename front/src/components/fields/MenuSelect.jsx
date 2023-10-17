@@ -105,6 +105,7 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
 
   const handleDeleteOption = async () => {
     console.log('eliminar');
+    const { data } = await trigger(`${url}/${value}`);
     try {
       await confirm({
         description: `El ${label} ${data?.name} se eliminará permanentemente.`,
@@ -142,6 +143,8 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
       if (isSuccess) {
         const id = dataAdd.id;
         setValueForm(name, id);
+      } else {
+        setValueForm(name, value);
       }
     }
   }, [isSuccess, isUpdSuccess]);

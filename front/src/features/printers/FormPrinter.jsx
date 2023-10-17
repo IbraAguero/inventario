@@ -3,7 +3,7 @@ import { StyledDialog } from '../../components/styledComponents/StyledDialog';
 import { useModal } from '../../context/ModalContext';
 import printerFormModel from './FormModel/printerFormModel';
 import validationSchema from './FormModel/validationSchema';
-import initialValues from './FormModel/formInitialValues';
+import defaultValues from './FormModel/formInitialValues';
 import AditionalForm from './Forms/AditionalForm';
 import TecnicalForm from './Forms/TecnicalForm';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -11,6 +11,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import {
   selectPrinterById,
   useCreatePrinterMutation,
+  useGetPrintersQuery,
   useUpdatePrinterMutation,
 } from './printersApiSlice';
 import {
@@ -29,6 +30,7 @@ import { useSelector } from 'react-redux';
 import { enqueueSnackbar } from 'notistack';
 import { useTheme } from '@emotion/react';
 import { tokens } from '../../theme';
+import useTitle from '../../hooks/useTitle';
 
 const { formId, formField } = printerFormModel;
 
@@ -55,22 +57,18 @@ const FormPrinter = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  const printer = useSelector((state) => selectPrinterById(state, params.id));
 
-  let defaultValues;
-  if (printer) {
-    defaultValues = {
-      ...printer,
-      [formField.maker.name]: printer.maker._id,
-      [formField.model.name]: printer.model._id,
-      [formField.type.name]: printer.type?._id,
-      [formField.place.name]: printer.place._id,
-      [formField.state.name]: printer.state._id,
-      [formField.supplier.name]: printer.supplier?._id,
-    };
-  } else {
-    defaultValues = initialValues;
-  }
+  const { printer } = useGetPrintersQuery('printersList', {
+    selectFromResult: ({ data }) => ({
+      printer: data?.entities[params.id],
+    }),
+  });
+
+  useTitle(
+    params.id
+      ? 'Editar impresora | Inventario'
+      : 'Agregar impresora | Inventario'
+  );
 
   const methods = useForm({
     shouldUnregister: false,
@@ -81,7 +79,7 @@ const FormPrinter = () => {
   const { handleSubmit, reset, trigger, formState, watch } = methods;
   const { isSubmitting } = formState;
 
-  /* useEffect(() => {
+  useEffect(() => {
     if (printer) {
       const parsePrinter = {
         ...printer,
@@ -94,7 +92,7 @@ const FormPrinter = () => {
       };
       reset(parsePrinter);
     }
-  }, [printer]); */
+  }, [printer]);
 
   const [createPrinter, { data, isSuccess, isLoading, error }] =
     useCreatePrinterMutation();
@@ -162,7 +160,12 @@ const FormPrinter = () => {
 
   return (
     <>
-      <StyledDialog open={modalOpen} onClose={closeModal} fullWidth>
+      <StyledDialog
+        open={modalOpen}
+        onClose={closeModal}
+        fullWidth
+        /* maxWidth="md" */
+      >
         <DialogTitle
           sx={{
             fontSize: '20px',
@@ -173,7 +176,7 @@ const FormPrinter = () => {
             padding: 1,
           }}
         >
-          {printer ? 'Editar Impresora' : 'Agregar Impresora'}
+          {params.id ? 'Editar Impresora' : 'Agregar Impresora'}
         </DialogTitle>
         <DialogContent
           sx={{

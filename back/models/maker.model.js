@@ -8,7 +8,15 @@ const makerSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['impresora', 'monitor'],
+    enum: [
+      'impresora',
+      'monitor',
+      'cpu',
+      'ram',
+      'hdd',
+      'motherBoard',
+      'graficCard',
+    ],
     required: true,
   },
   models: [
