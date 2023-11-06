@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const motherBoardSchema = new mongoose.Schema({
   maker: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Maker',
+    ref: "Maker",
     required: true,
   },
   model: { type: String, trim: true },
@@ -13,7 +13,7 @@ const motherBoardSchema = new mongoose.Schema({
 const cpuSchema = new mongoose.Schema({
   maker: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Maker',
+    ref: "Maker",
     required: true,
   },
   model: { type: String, trim: true },
@@ -24,7 +24,7 @@ const cpuSchema = new mongoose.Schema({
 const ramSchema = new mongoose.Schema({
   maker: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Maker',
+    ref: "Maker",
     required: true,
   },
   model: { type: String, trim: true },
@@ -32,7 +32,7 @@ const ramSchema = new mongoose.Schema({
   frequency: { type: String, trim: true },
   type: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Type',
+    ref: "Type",
     required: true,
   },
 });
@@ -40,18 +40,18 @@ const ramSchema = new mongoose.Schema({
 const hddSchema = new mongoose.Schema({
   maker: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Maker',
+    ref: "Maker",
     required: true,
   },
   model: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Model',
+    ref: "Model",
     required: true,
   },
   capacity: { type: String, trim: true },
   type: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Type',
+    ref: "Type",
     required: true,
   },
 });
@@ -59,12 +59,12 @@ const hddSchema = new mongoose.Schema({
 const graphicCardSchema = new mongoose.Schema({
   maker: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Maker',
+    ref: "Maker",
     required: true,
   },
   model: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Model',
+    ref: "Model",
     required: true,
   },
   memory: { type: String, trim: true },
@@ -85,33 +85,33 @@ const computerSchema = new mongoose.Schema(
     },
     cpu: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'CPU',
+      ref: "CPU",
     },
     ram: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'RAM',
+      ref: "RAM",
     },
     hdd: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'HDD',
+      ref: "HDD",
     },
     graphicCard: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'graphicCard',
+      ref: "graphicCard",
     },
     place: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Place',
+      ref: "Place",
       required: true,
     },
     state: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'State',
+      ref: "State",
       required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     order: {
       type: String,
@@ -124,7 +124,7 @@ const computerSchema = new mongoose.Schema(
     },
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Supplier',
+      ref: "Supplier",
       required: true,
     },
     mandated: {
@@ -139,7 +139,7 @@ const computerSchema = new mongoose.Schema(
         },
         user: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
+          ref: "User",
         },
         values: [
           {
@@ -161,19 +161,11 @@ const computerSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-/* printerSchema.set('toJSON', {
-  transform: (document, returnedObject) => {
-    returnedObject.id = returnedObject._id;
-    delete returnedObject._id;
-    delete returnedObject.__v;
-  },
-});
- */
-const Computer = mongoose.model('Computer', computerSchema);
-const MotherBoard = mongoose.model('MotherBoard', motherBoardSchema);
-const CPU = mongoose.model('CPU', cpuSchema);
-const RAM = mongoose.model('RAM', ramSchema);
-const HDD = mongoose.model('HDD', hddSchema);
-const GraphicCard = mongoose.model('graphicCard', graphicCardSchema);
+const Computer = mongoose.model("Computer", computerSchema);
+const MotherBoard = mongoose.model("MotherBoard", motherBoardSchema);
+const CPU = mongoose.model("CPU", cpuSchema);
+const RAM = mongoose.model("RAM", ramSchema);
+const HDD = mongoose.model("HDD", hddSchema);
+const GraphicCard = mongoose.model("graphicCard", graphicCardSchema);
 
 export { Computer, MotherBoard, CPU, RAM, HDD, GraphicCard };

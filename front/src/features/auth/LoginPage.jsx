@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
-import { useNavigate, NavLink } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setCredentials } from './authSlice';
-import { useLoginMutation, useSendLogoutMutation } from './authApiSlice';
-import usePersist from '../../hooks/usePersist';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm, Controller, FormProvider } from 'react-hook-form';
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "./authSlice";
+import { useLoginMutation, useSendLogoutMutation } from "./authApiSlice";
+import usePersist from "../../hooks/usePersist";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm, Controller, FormProvider } from "react-hook-form";
 import {
   Alert,
   Box,
@@ -20,26 +20,26 @@ import {
   OutlinedInput,
   TextField,
   Typography,
-} from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useTheme } from '@emotion/react';
-import { tokens } from '../../theme';
-import useTitle from '../../hooks/useTitle';
-import PasswordField from '../../components/fields/PasswordField';
-import { TextFieldCustom } from '../../components/fields/TextFieldCustom';
+} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
+import useTitle from "../../hooks/useTitle";
+import PasswordField from "../../components/fields/PasswordField";
+import { TextFieldCustom } from "../../components/fields/TextFieldCustom";
 
 const schema = yup.object().shape({
   email: yup
     .string()
-    .email('El email no es valido')
-    .required('Ingrese un email'),
-  password: yup.string().required('Ingrese una contraseña'),
+    .email("El email no es valido")
+    .required("Ingrese un email"),
+  password: yup.string().required("Ingrese una contraseña"),
 });
 
 const LoginPage = () => {
-  useTitle('Login | Inventario');
+  useTitle("Login | Inventario");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -54,7 +54,7 @@ const LoginPage = () => {
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
   });
 
   const {
@@ -66,7 +66,7 @@ const LoginPage = () => {
   } = methods;
 
   const [login, { isLoading }] = useLoginMutation();
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
 
   // Inicializa el valor 'persist' desde localStorage o en 'false' si no se encuentra
   const [persist, setPersist] = usePersist();
@@ -93,17 +93,17 @@ const LoginPage = () => {
       const { accessToken } = await login(data).unwrap();
       dispatch(setCredentials({ accessToken }));
       reset();
-      navigate('/impresoras');
+      navigate("/");
     } catch (err) {
       setErrMsg(err.data?.message);
     }
   });
 
-  const email = watch('email');
-  const password = watch('password');
+  const email = watch("email");
+  const password = watch("password");
 
   useEffect(() => {
-    setErrMsg('');
+    setErrMsg("");
   }, [email, password]);
 
   //const errRef = useRef();
@@ -127,7 +127,7 @@ const LoginPage = () => {
         boxShadow={8}
         borderRadius={5}
         bgcolor={colors.primary[700]}
-        width={{ xs: '10', md: '8', lg: '4' }}
+        width={{ xs: "10", md: "8", lg: "4" }}
       >
         <Box textAlign="center" mb={4}>
           <Typography variant="h2" component="h1" fontWeight={700}>
@@ -139,7 +139,7 @@ const LoginPage = () => {
         </Box>
         <FormProvider {...methods}>
           <form onSubmit={onSubmit}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {errMsg && <Alert severity="error">{errMsg}</Alert>}
               <TextFieldCustom name="email" label="Email" autoComplete="off" />
               {/* <Controller
@@ -192,7 +192,7 @@ const LoginPage = () => {
           </form>
         </FormProvider>
         <Typography textAlign="center">
-          Olvidaste tu contraseña?{' '}
+          Olvidaste tu contraseña?{" "}
           <Link component={NavLink} to="/recuperar-contraseña">
             Recuperar contraseña
           </Link>

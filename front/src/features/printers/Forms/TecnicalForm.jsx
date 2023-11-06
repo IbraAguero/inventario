@@ -1,11 +1,11 @@
-import { Grid, Typography } from '@mui/material';
-import { TextFieldCustom } from '../../../components/fields/TextFieldCustom';
-import { useGetOptionsQuery } from '../../../app/api/optionsApiSlice';
-import { useFormContext } from 'react-hook-form';
-import useAuth from '../../../hooks/useAuth';
-import { useEffect } from 'react';
-import SelectFieldWithMenu from '../../../components/fields/SelectFieldWithMenu';
-import modelModel from '../../../../../back/models/model.model';
+import { Grid, Typography } from "@mui/material";
+import { TextFieldCustom } from "../../../components/fields/TextFieldCustom";
+import { useGetOptionsQuery } from "../../../app/api/optionsApiSlice";
+import { useFormContext } from "react-hook-form";
+import useAuth from "../../../hooks/useAuth";
+import { useEffect } from "react";
+import SelectFieldWithMenu from "../../../components/fields/SelectFieldWithMenu";
+import modelModel from "../../../../../back/models/model.model";
 
 const TecnicalForm = ({ formField }) => {
   const { nroInventario, nroSerie, maker, model, type } = formField;
@@ -25,6 +25,7 @@ const TecnicalForm = ({ formField }) => {
       skip: !makerValue,
     }
   );
+
   const { data: optionsTypes, error: errorType } = useGetOptionsQuery(
     type.url,
     {
@@ -59,9 +60,9 @@ const TecnicalForm = ({ formField }) => {
             url={maker.url}
             onChange={(e) => {
               setValue(maker.name, e.target.value);
-              setValue(model.name, '');
+              setValue(model.name, "");
             }}
-          ></SelectFieldWithMenu>
+          />
         </Grid>
         <Grid item xs={12} sm={6}>
           <SelectFieldWithMenu

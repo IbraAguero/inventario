@@ -1,32 +1,32 @@
-import { Box, Button, Typography, debounce, useTheme } from '@mui/material';
+import { Box, Button, Typography, debounce, useTheme } from "@mui/material";
 
-import { useGridApiRef } from '@mui/x-data-grid';
-import { useMemo, useState } from 'react';
+import { useGridApiRef } from "@mui/x-data-grid";
+import { useMemo, useState } from "react";
 
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation } from "react-router-dom";
 
-import { useSelector } from 'react-redux';
-import { useModal } from '../../context/ModalContext';
-import { tokens } from '../../theme';
+import { useSelector } from "react-redux";
+import { useModal } from "../../context/ModalContext";
+import { tokens } from "../../theme";
 import {
   selectAllPrinters,
   useDeletePrinterMutation,
   useGetPrintersQuery,
-} from './printersApiSlice';
-import ButtonMoreMenu from '../../components/ButtonMoreMenu';
-import StyledSearchInput from '../../components/styledComponents/StyledSearchInput';
-import TablePrinter from './TablePrinter';
-import useTitle from '../../hooks/useTitle';
+} from "./printersApiSlice";
+import ButtonMoreMenu from "../../components/ButtonMoreMenu";
+import StyledSearchInput from "../../components/styledComponents/StyledSearchInput";
+import TablePrinter from "./TablePrinter";
+import useTitle from "../../hooks/useTitle";
 
 const PagePrinter = () => {
-  useTitle('Impresoras | Inventario');
+  useTitle("Impresoras | Inventario");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { openModal } = useModal();
   const location = useLocation();
 
-  const { data, isError, isLoading } = useGetPrintersQuery('printersList', {
+  const { data, isError, isLoading } = useGetPrintersQuery("printersList", {
     pollingInterval: 30000,
     refetchOnFocus: true,
   });
@@ -37,84 +37,84 @@ const PagePrinter = () => {
 
   const columns = [
     {
-      field: 'nroinventario',
-      headerName: 'Nro Inv.',
-      headerAlign: 'center',
-      align: 'center',
+      field: "nroinventario",
+      headerName: "Nro Inv.",
+      headerAlign: "center",
+      align: "center",
     },
     {
-      field: 'nroserie',
-      headerName: 'Nro Serie',
-      headerAlign: 'center',
-      align: 'center',
+      field: "nroserie",
+      headerName: "Nro Serie",
+      headerAlign: "center",
+      align: "center",
     },
     {
-      field: 'place',
-      headerName: 'Lugar',
+      field: "place",
+      headerName: "Lugar",
       flex: 3,
-      cellClassName: 'lugar-column--cell',
-      headerAlign: 'center',
-      align: 'center',
+      cellClassName: "lugar-column--cell",
+      headerAlign: "center",
+      align: "center",
       valueGetter: (params) => params.row.place.name,
     },
     {
-      field: 'maker',
-      headerName: 'Fabricante',
-      headerAlign: 'center',
-      align: 'center',
+      field: "maker",
+      headerName: "Fabricante",
+      headerAlign: "center",
+      align: "center",
       flex: 1,
       valueGetter: (params) => params.row.maker.name,
     },
     {
-      field: 'model',
-      headerName: 'Modelo',
-      headerAlign: 'center',
-      align: 'center',
+      field: "model",
+      headerName: "Modelo",
+      headerAlign: "center",
+      align: "center",
       flex: 2,
       valueGetter: (params) => params.row.model.name,
     },
     {
-      field: 'createdAt',
-      headerName: 'Fecha de Creación',
-      headerAlign: 'center',
-      align: 'center',
+      field: "createdAt",
+      headerName: "Fecha de Creación",
+      headerAlign: "center",
+      align: "center",
       flex: 2,
       valueGetter: (params) => {
         const createdAt = params.row.createdAt;
 
-        const formattedDate = new Date(createdAt).toLocaleDateString('es-ES', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
+        const formattedDate = new Date(createdAt).toLocaleDateString("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
 
         return formattedDate;
       },
     },
     {
-      field: 'updatedAt',
-      headerName: 'Fecha de Actualización',
-      headerAlign: 'center',
-      align: 'center',
+      field: "updatedAt",
+      headerName: "Fecha de Actualización",
+      headerAlign: "center",
+      align: "center",
       flex: 2,
       valueGetter: (params) => {
         const updatedAt = params.row.updatedAt;
 
-        const formattedDate = new Date(updatedAt).toLocaleString('es-ES', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
+        const formattedDate = new Date(updatedAt).toLocaleString("es-ES", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
         });
 
         return formattedDate;
       },
     },
     {
-      field: 'state',
-      headerName: 'Estado',
-      headerAlign: 'center',
-      align: 'center',
-      cellClassName: 'estado-column--cell',
+      field: "state",
+      headerName: "Estado",
+      headerAlign: "center",
+      align: "center",
+      cellClassName: "estado-column--cell",
       minWidth: 100,
       flex: 1,
       renderCell: ({ row: { state } }) => {
@@ -126,7 +126,7 @@ const PagePrinter = () => {
             padding="1px"
             borderRadius={25}
             backgroundColor={
-              state.name == 'Activo'
+              state.name == "Activo"
                 ? colors.greenAccent[600]
                 : colors.grey[700]
             }
@@ -138,12 +138,12 @@ const PagePrinter = () => {
       valueGetter: (params) => params.row.state.name,
     },
     {
-      field: 'acciones',
-      headerName: '',
+      field: "acciones",
+      headerName: "",
       sortable: false,
       disableExport: true,
       disableColumnMenu: true,
-      align: 'center',
+      align: "center",
       width: 40,
       renderCell: ({ row: { id, nroinventario } }) => {
         return (
@@ -158,12 +158,12 @@ const PagePrinter = () => {
   ];
 
   const apiRef = useGridApiRef();
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState("");
 
   const updateSearchValue = useMemo(() => {
     return debounce((newValue) => {
       apiRef.current.setQuickFilterValues(
-        newValue.split(' ').filter((word) => word !== '')
+        newValue.split(" ").filter((word) => word !== "")
       );
     }, 250);
   }, [apiRef]);
@@ -190,12 +190,6 @@ const PagePrinter = () => {
 
   return (
     <>
-      {/*       <FormPage
-        title="Agregar impresora"
-        open={openForm}
-        onClose={() => setOpenForm(false)}
-        preloadedData={preloadedData}
-      /> */}
       <Box
         bgcolor={colors.primary[700]}
         margin={1}

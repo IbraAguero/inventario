@@ -1,75 +1,68 @@
-import { useEffect, useState } from 'react';
-import { StyledDialog } from '../../components/styledComponents/StyledDialog';
-import { useModal } from '../../context/ModalContext';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
-import {
-  Alert,
-  Box,
-  Button,
-  DialogContent,
-  DialogTitle,
-  Grid,
-} from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import { useNavigate } from 'react-router-dom';
-import { enqueueSnackbar } from 'notistack';
-import { useTheme } from '@emotion/react';
-import { tokens } from '../../theme';
-import useTitle from '../../hooks/useTitle';
-import { useCreateUserMutation } from './usersApiSlice';
-import * as yup from 'yup';
-import { TextFieldCustom } from '../../components/fields/TextFieldCustom';
-import { SelectFieldCustom } from '../../components/fields/SelectFieldCustom';
-import PasswordField from '../../components/fields/PasswordField';
+import { useEffect, useState } from "react";
+import { StyledDialog } from "../../components/styledComponents/StyledDialog";
+import { useModal } from "../../context/ModalContext";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormProvider, useForm } from "react-hook-form";
+import { Alert, Box, DialogContent, DialogTitle, Grid } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
+import { useNavigate } from "react-router-dom";
+import { enqueueSnackbar } from "notistack";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
+import useTitle from "../../hooks/useTitle";
+import { useCreateUserMutation } from "./usersApiSlice";
+import { TextFieldCustom } from "../../components/fields/TextFieldCustom";
+import { SelectFieldCustom } from "../../components/fields/SelectFieldCustom";
+import PasswordField from "../../components/fields/PasswordField";
+import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required('El nombre es obligatorio'),
-  lastName: yup.string().required('El apellido es obligatorio'),
+  name: yup.string().required("El nombre es obligatorio"),
+  lastName: yup.string().required("El apellido es obligatorio"),
   email: yup
     .string()
-    .email('El email no es válido')
-    .required('El email es obligatorio'),
+    .email("El email no es válido")
+    .required("El email es obligatorio"),
   password: yup
     .string()
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('La contraseña es obligatoria'),
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .required("La contraseña es obligatoria"),
   confirmPassword: yup
     .string()
-    .required('Confirme su contraseña')
-    .oneOf([yup.ref('password'), null], 'Las contraseñas no coinciden'),
+    .required("Confirme su contraseña")
+    .oneOf([yup.ref("password"), null], "Las contraseñas no coinciden"),
   rol: yup
     .string()
-    .oneOf(['Administrador', 'Tecnico', 'Empleado'], 'Rol no válido')
-    .required('El rol es obligatorio'),
+    .oneOf(["Administrador", "Tecnico", "Empleado"], "Rol no válido")
+    .required("El rol es obligatorio"),
 });
 
 const defaultValues = {
-  name: '',
-  lastName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  rol: '',
+  name: "",
+  lastName: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  rol: "",
 };
 
 const ROLES = [
-  { name: 'Empleado', id: 'Empleado' },
-  { name: 'Tecnico', id: 'Tecnico' },
-  { name: 'Administrador', id: 'Administrador' },
+  { name: "Empleado", id: "Empleado" },
+  { name: "Tecnico", id: "Tecnico" },
+  { name: "Administrador", id: "Administrador" },
 ];
 
 const FormPrinter = () => {
   const { modalOpen, closeModal } = useModal();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [errContent, setErrContent] = useState('');
+  const [errContent, setErrContent] = useState("");
 
   const [createUser, { data, error, isLoading, isSuccess }] =
     useCreateUserMutation();
 
   const navigate = useNavigate();
-  useTitle('Agregar usuario | Inventario');
+  useTitle("Agregar usuario | Inventario");
 
   const methods = useForm({
     shouldUnregister: false,
@@ -98,19 +91,19 @@ const FormPrinter = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/usuarios');
+      navigate("/usuarios");
       handleReset();
       enqueueSnackbar(data?.message, {
-        variant: 'success',
+        variant: "success",
       });
     }
   }, [isSuccess]);
 
   useEffect(() => {
-    setErrContent(error?.data?.message) ?? '';
+    setErrContent(error?.data?.message) ?? "";
 
     setTimeout(() => {
-      setErrContent('');
+      setErrContent("");
     }, 4000);
   }, [error]);
 
@@ -124,28 +117,28 @@ const FormPrinter = () => {
       >
         <DialogTitle
           sx={{
-            fontSize: '20px',
-            fontWeight: '600',
-            textAlign: 'center',
-            color: '#fff',
+            fontSize: "20px",
+            fontWeight: "600",
+            textAlign: "center",
+            color: "#fff",
             margin: 0,
             padding: 1,
           }}
         >
-          {'Agregar usuario'}
+          {"Agregar usuario"}
         </DialogTitle>
         <DialogContent
           sx={{
-            margin: '0 5px 5px',
-            padding: '0 4rem 2rem',
+            margin: "0 5px 5px",
+            padding: "0 4rem 2rem",
             borderRadius: 2,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             background: colors.bgTable,
             gap: 3,
           }}
         >
-          <Box sx={{ marginTop: '2rem' }}></Box>
+          <Box sx={{ marginTop: "2rem" }}></Box>
           {errContent && <Alert severity="error">{errContent}</Alert>}
           <>
             <FormProvider {...methods}>
@@ -176,7 +169,7 @@ const FormPrinter = () => {
                 <Box
                   display="flex"
                   justifyContent="center"
-                  style={{ paddingTop: '5vh' }}
+                  style={{ paddingTop: "5vh" }}
                 >
                   <LoadingButton
                     variant="contained"
