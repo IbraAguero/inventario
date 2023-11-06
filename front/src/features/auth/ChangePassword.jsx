@@ -1,25 +1,25 @@
-import { useTheme } from '@emotion/react';
-import { Box, TextField, Typography, Link, Alert } from '@mui/material';
-import { tokens } from '../../theme';
-import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import { NavLink, useLocation } from 'react-router-dom';
-import { Controller, FormProvider, useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useChangePasswordMutation } from './authApiSlice';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import { useEffect, useState } from 'react';
-import PasswordField from '../../components/fields/PasswordField';
+import { useTheme } from "@emotion/react";
+import { Box, TextField, Typography, Link, Alert } from "@mui/material";
+import { tokens } from "../../theme";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
+import { NavLink, useLocation } from "react-router-dom";
+import { Controller, FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useChangePasswordMutation } from "./authApiSlice";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
+import { useEffect, useState } from "react";
+import PasswordField from "../../components/fields/PasswordField";
 
 const schema = yup.object().shape({
   newPassword: yup
     .string()
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('Ingrese la nueva contraseña'),
+    .min(8, "La contraseña debe tener al menos 8 caracteres")
+    .required("Ingrese la nueva contraseña"),
   confirmPassword: yup
     .string()
-    .required('Confirme su contraseña')
-    .oneOf([yup.ref('newPassword'), null], 'Las contraseñas no coinciden'),
+    .required("Confirme su contraseña")
+    .oneOf([yup.ref("newPassword"), null], "Las contraseñas no coinciden"),
 });
 
 const ChangePassword = () => {
@@ -28,14 +28,14 @@ const ChangePassword = () => {
 
   const { search } = useLocation();
   const query = new URLSearchParams(search);
-  const token = query.get('token');
+  const token = query.get("token");
 
   const [changePassword, { data, isLoading, error, isSuccess }] =
     useChangePasswordMutation();
 
   const methods = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { newPassword: '', confirmPassword: '' },
+    defaultValues: { newPassword: "", confirmPassword: "" },
   });
 
   const {
@@ -54,7 +54,7 @@ const ChangePassword = () => {
     }
   });
 
-  const [errMsg, setErrMsg] = useState('');
+  const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
     if (error) setErrMsg(error.data.message);
@@ -75,18 +75,18 @@ const ChangePassword = () => {
           boxShadow={8}
           borderRadius={5}
           bgcolor={colors.primary[700]}
-          width={{ xs: '10', md: '8', lg: '4' }}
+          width={{ xs: "10", md: "8", lg: "4" }}
         >
           <Box
             textAlign="center"
             sx={{
-              display: 'flex',
-              flexDirection: 'column',
+              display: "flex",
+              flexDirection: "column",
               gap: 1,
-              alignItems: 'center',
+              alignItems: "center",
             }}
           >
-            <CheckCircleOutlinedIcon sx={{ fontSize: '5rem' }} />
+            <CheckCircleOutlinedIcon sx={{ fontSize: "5rem" }} />
             <Typography
               variant="h4"
               component="h1"
@@ -104,7 +104,7 @@ const ChangePassword = () => {
               Ahora puedes usar tu nueva contraseña para iniciar sesión.
             </Typography>
             <Typography textAlign="center" marginTop={2}>
-              Volver al{' '}
+              Volver al{" "}
               <Link component={NavLink} to="/login">
                 Inicio
               </Link>
@@ -129,12 +129,12 @@ const ChangePassword = () => {
         boxShadow={8}
         borderRadius={5}
         bgcolor={colors.primary[700]}
-        width={{ xs: '10', md: '8', lg: '4' }}
+        width={{ xs: "10", md: "8", lg: "4" }}
         textAlign="center"
         sx={{
           marginBottom: 2,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           gap: 3,
         }}
       >
@@ -149,32 +149,11 @@ const ChangePassword = () => {
         {errMsg && <Alert severity="error">{errMsg}</Alert>}
         <FormProvider {...methods}>
           <form onSubmit={onSubmit}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Controller
-                control={control}
-                name="newPassword"
-                render={({ field }) => (
-                  <PasswordField
-                    label="Nueva contraseña"
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={!!errors.newPassword}
-                    helperText={errors.newPassword?.message}
-                  />
-                )}
-              />
-              <Controller
-                control={control}
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              <PasswordField name="newPassword" label="Nueva contraseña" />
+              <PasswordField
                 name="confirmPassword"
-                render={({ field }) => (
-                  <PasswordField
-                    label="Confirmar contraseña"
-                    value={field.value}
-                    onChange={field.onChange}
-                    error={!!errors.confirmPassword}
-                    helperText={errors.confirmPassword?.message}
-                  />
-                )}
+                label="Confirmar contraseña"
               />
             </Box>
             <LoadingButton
