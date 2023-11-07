@@ -10,6 +10,7 @@ import { StyledDialog } from "../../components/styledComponents/StyledDialog";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import MotherBoardForm from "./MotherBoardForm";
+import CpuForm from "./CpuForm";
 
 const ComponentsForm = ({ modal, closeModal }) => {
   const theme = useTheme();
@@ -76,7 +77,7 @@ const ComponentsForm = ({ modal, closeModal }) => {
             )}
             {selectedComponent === "CPU" && (
               // Renderiza los campos específicos para la CPU
-              <div>Campos para CPU</div>
+              <CpuForm closeModal={closeModal} />
             )}
             {selectedComponent === "RAM" && (
               // Renderiza los campos específicos para la RAM

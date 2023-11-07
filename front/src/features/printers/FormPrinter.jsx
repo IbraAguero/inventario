@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
-import { StyledDialog } from '../../components/styledComponents/StyledDialog';
-import { useModal } from '../../context/ModalContext';
-import printerFormModel from './FormModel/printerFormModel';
-import validationSchema from './FormModel/validationSchema';
-import defaultValues from './FormModel/formInitialValues';
-import AditionalForm from './Forms/AditionalForm';
-import TecnicalForm from './Forms/TecnicalForm';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { FormProvider, useForm } from 'react-hook-form';
+import { useEffect, useState } from "react";
+import { StyledDialog } from "../../components/styledComponents/StyledDialog";
+import { useModal } from "../../context/ModalContext";
+import printerFormModel from "./FormModel/printerFormModel";
+import validationSchema from "./FormModel/validationSchema";
+import defaultValues from "./FormModel/formInitialValues";
+import AditionalForm from "./Forms/AditionalForm";
+import TecnicalForm from "./Forms/TecnicalForm";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormProvider, useForm } from "react-hook-form";
 import {
   selectPrinterById,
   useCreatePrinterMutation,
   useGetPrintersQuery,
   useUpdatePrinterMutation,
-} from './printersApiSlice';
+} from "./printersApiSlice";
 import {
   Alert,
   Box,
@@ -23,18 +23,18 @@ import {
   Step,
   StepLabel,
   Stepper,
-} from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { enqueueSnackbar } from 'notistack';
-import { useTheme } from '@emotion/react';
-import { tokens } from '../../theme';
-import useTitle from '../../hooks/useTitle';
+} from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { enqueueSnackbar } from "notistack";
+import { useTheme } from "@emotion/react";
+import { tokens } from "../../theme";
+import useTitle from "../../hooks/useTitle";
 
 const { formId, formField } = printerFormModel;
 
-const steps = ['Informacion Tecnica', 'Informacion Adicional'];
+const steps = ["Informacion Tecnica", "Informacion Adicional"];
 
 function _renderStepContent(step) {
   switch (step) {
@@ -52,13 +52,13 @@ const FormPrinter = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [activeStep, setActiveStep] = useState(0);
-  const [errContent, setErrContent] = useState('');
+  const [errContent, setErrContent] = useState("");
   const currentValidationSchema = validationSchema[activeStep];
 
   const navigate = useNavigate();
   const params = useParams();
 
-  const { printer } = useGetPrintersQuery('printersList', {
+  const { printer } = useGetPrintersQuery("printersList", {
     selectFromResult: ({ data }) => ({
       printer: data?.entities[params.id],
     }),
@@ -66,15 +66,15 @@ const FormPrinter = () => {
 
   useTitle(
     params.id
-      ? 'Editar impresora | Inventario'
-      : 'Agregar impresora | Inventario'
+      ? "Editar impresora | Inventario"
+      : "Agregar impresora | Inventario"
   );
 
   const methods = useForm({
     shouldUnregister: false,
     defaultValues,
     resolver: yupResolver(currentValidationSchema),
-    mode: 'onChange',
+    mode: "onChange",
   });
   const { handleSubmit, reset, trigger, formState, watch } = methods;
   const { isSubmitting } = formState;
@@ -133,7 +133,7 @@ const FormPrinter = () => {
           console.log(data);
         }
       } catch (err) {
-        console.error('Error al agregar la impresora:', err);
+        console.error("Error al agregar la impresora:", err);
       }
     } else {
       handleNext();
@@ -142,19 +142,19 @@ const FormPrinter = () => {
 
   useEffect(() => {
     if (isSuccess || isUpdSuccess) {
-      navigate('/impresoras');
+      navigate("/impresoras");
       handleReset();
       enqueueSnackbar(data?.message || dataUpd?.message, {
-        variant: 'success',
+        variant: "success",
       });
     }
   }, [isSuccess, isUpdSuccess]);
 
   useEffect(() => {
-    setErrContent(error?.data?.message || errorUpd?.data?.message) ?? '';
+    setErrContent(error?.data?.message || errorUpd?.data?.message) ?? "";
 
     setTimeout(() => {
-      setErrContent('');
+      setErrContent("");
     }, 3000);
   }, [error, errorUpd]);
 
@@ -168,28 +168,28 @@ const FormPrinter = () => {
       >
         <DialogTitle
           sx={{
-            fontSize: '20px',
-            fontWeight: '600',
-            textAlign: 'center',
-            color: '#fff',
+            fontSize: "20px",
+            fontWeight: "600",
+            textAlign: "center",
+            color: "#fff",
             margin: 0,
             padding: 1,
           }}
         >
-          {params.id ? 'Editar Impresora' : 'Agregar Impresora'}
+          {params.id ? "Editar Impresora" : "Agregar Impresora"}
         </DialogTitle>
         <DialogContent
           sx={{
-            margin: '0 5px 5px',
-            padding: '0 4rem 2rem',
+            margin: "0 5px 5px",
+            padding: "0 4rem 2rem",
             borderRadius: 2,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             background: colors.bgTable,
             gap: 3,
           }}
         >
-          <Box sx={{ marginTop: '2rem' }}>
+          <Box sx={{ marginTop: "2rem" }}>
             <Stepper activeStep={activeStep}>
               {steps.map((label, index) => {
                 const stepProps = {};
@@ -213,7 +213,7 @@ const FormPrinter = () => {
                   <Box
                     display="flex"
                     justifyContent="center"
-                    style={{ paddingTop: '5vh' }}
+                    style={{ paddingTop: "5vh" }}
                   >
                     <Button disabled={activeStep === 0} onClick={handleBack}>
                       Atras

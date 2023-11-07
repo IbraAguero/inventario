@@ -49,7 +49,7 @@ const MotherBoardForm = () => {
               name="maker"
               label="Fabricante"
               data={optionsMakers || []}
-              url={"placa-madre/fabricantes"}
+              url={url}
             />
           </Grid>
           <Grid item xs={12} sm={4}>
