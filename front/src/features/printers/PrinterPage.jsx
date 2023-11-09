@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 
 import { Link, Outlet, useLocation } from "react-router-dom";
 
-import { useSelector } from "react-redux";
 import { useModal } from "../../context/ModalContext";
 import { tokens } from "../../theme";
 import {
@@ -248,7 +247,7 @@ const PagePrinter = () => {
         >
           <TablePrinter
             data={printers || []}
-            header={columns}
+            columns={columns}
             apiRef={apiRef}
             isLoading={isLoading}
           />

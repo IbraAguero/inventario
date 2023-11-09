@@ -2,7 +2,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Box, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
-const TablePrinter = ({ data, columns, apiRef, isLoading }) => {
+const TableComputer = ({ data, columns, apiRef, isLoading }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -76,4 +76,4 @@ const TablePrinter = ({ data, columns, apiRef, isLoading }) => {
     </Box>
   );
 };
-export default TablePrinter;
+export default TableComputer;

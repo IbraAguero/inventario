@@ -1,6 +1,5 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import {
   useAddOptionMutation,
   useGetOptionsQuery,
@@ -11,22 +10,25 @@ import { TextFieldCustom } from "../../components/fields/TextFieldCustom";
 import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
+import * as yup from "yup";
 
 const defaultValues = {
   maker: "",
   model: "",
+  capacity: "",
   frequency: "",
-  cores: "",
+  type: "",
 };
 
 const schema = yup.object().shape({
   maker: yup.string().required("El fabricante es requerido"),
-  model: yup.string().required("El modelo es requerido"),
-  frequency: yup.string().required("La frecuencia es requerida"),
-  cores: yup.number().min(0).max(100).required("Este campo es obligatorio"),
+  model: yup.string().required("Este campo es obligatorio"),
+  capacity: yup.string().required("Este campo es obligatorio"),
+  frequency: yup.string().required("Este campo es obligatorio"),
+  type: yup.string().required("Este campo es obligatorio"),
 });
 
-const CpuForm = ({ closeModal }) => {
+const RamForm = ({ closeModal }) => {
   const [errContent, setErrContent] = useState("");
 
   const methods = useForm({
@@ -38,11 +40,12 @@ const CpuForm = ({ closeModal }) => {
     formState: { isSubmitting },
   } = methods;
 
-  const urlComponent = "computadoras/cpu";
-  const urlMaker = "cpu/fabricantes";
+  const urlComponent = "computadoras/ram";
+  const urlMaker = "ram/fabricantes";
+  const urlTypes = "ram/tipos";
 
   const { data: optionsMakers } = useGetOptionsQuery(urlMaker);
-
+  const { data: optionsTypes } = useGetOptionsQuery(urlTypes);
   const [addOption, { isSuccess, isLoading, data: dataAdd, error: errAdd }] =
     useAddOptionMutation();
 
@@ -89,19 +92,18 @@ const CpuForm = ({ closeModal }) => {
             <Grid item xs={12} sm={6}>
               <TextFieldCustom name="model" label="Modelo" />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
+              <TextFieldCustom name="capacity" label="Capacidad" />
+            </Grid>
+            <Grid item xs={12} sm={4}>
               <TextFieldCustom name="frequency" label="Frecuencia" />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextFieldCustom
-                name="cores"
-                label="Nucleos"
-                type="number"
-                inputProps={{
-                  min: 0,
-                  max: 100,
-                  step: 1,
-                }}
+            <Grid item xs={12} sm={4}>
+              <SelectFieldWithMenu
+                name="type"
+                label="Tipo"
+                data={optionsTypes || []}
+                url={urlTypes}
               />
             </Grid>
           </Grid>
@@ -126,4 +128,4 @@ const CpuForm = ({ closeModal }) => {
   );
 };
 
-export default CpuForm;
+export default RamForm;

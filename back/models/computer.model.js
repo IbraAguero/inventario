@@ -43,11 +43,7 @@ const hddSchema = new mongoose.Schema({
     ref: "Maker",
     required: true,
   },
-  model: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Model",
-    required: true,
-  },
+  model: { type: String, trim: true },
   capacity: { type: String, trim: true },
   type: {
     type: mongoose.Schema.Types.ObjectId,
@@ -62,11 +58,7 @@ const graphicCardSchema = new mongoose.Schema({
     ref: "Maker",
     required: true,
   },
-  model: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Model",
-    required: true,
-  },
+  model: { type: String, trim: true },
   memory: { type: String, trim: true },
 });
 
@@ -86,6 +78,10 @@ const computerSchema = new mongoose.Schema(
     cpu: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "CPU",
+    },
+    motherBoard: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "MotherBoard",
     },
     ram: {
       type: mongoose.Schema.Types.ObjectId,
@@ -125,7 +121,6 @@ const computerSchema = new mongoose.Schema(
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Supplier",
-      required: true,
     },
     mandated: {
       type: String,

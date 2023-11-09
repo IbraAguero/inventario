@@ -1,6 +1,5 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import {
   useAddOptionMutation,
   useGetOptionsQuery,
@@ -11,22 +10,21 @@ import { TextFieldCustom } from "../../components/fields/TextFieldCustom";
 import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
 import { useEffect, useState } from "react";
 import { enqueueSnackbar } from "notistack";
+import * as yup from "yup";
 
 const defaultValues = {
   maker: "",
   model: "",
-  frequency: "",
-  cores: "",
+  memory: "",
 };
 
 const schema = yup.object().shape({
-  maker: yup.string().required("El fabricante es requerido"),
-  model: yup.string().required("El modelo es requerido"),
-  frequency: yup.string().required("La frecuencia es requerida"),
-  cores: yup.number().min(0).max(100).required("Este campo es obligatorio"),
+  maker: yup.string().required("Campo requerido"),
+  model: yup.string().required("Campo requerido"),
+  memory: yup.string().required("Campo requerido"),
 });
 
-const CpuForm = ({ closeModal }) => {
+const GraphicCardForm = ({ closeModal }) => {
   const [errContent, setErrContent] = useState("");
 
   const methods = useForm({
@@ -38,11 +36,10 @@ const CpuForm = ({ closeModal }) => {
     formState: { isSubmitting },
   } = methods;
 
-  const urlComponent = "computadoras/cpu";
-  const urlMaker = "cpu/fabricantes";
+  const urlComponent = "computadoras/tarjeta-grafica";
+  const urlMaker = "tarjeta-grafica/fabricantes";
 
   const { data: optionsMakers } = useGetOptionsQuery(urlMaker);
-
   const [addOption, { isSuccess, isLoading, data: dataAdd, error: errAdd }] =
     useAddOptionMutation();
 
@@ -50,6 +47,8 @@ const CpuForm = ({ closeModal }) => {
     addOption({ url: urlComponent, data });
     console.log(data);
   };
+
+  console.log(errAdd);
 
   useEffect(() => {
     if (isSuccess) {
@@ -78,7 +77,7 @@ const CpuForm = ({ closeModal }) => {
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={5}>
               <SelectFieldWithMenu
                 name="maker"
                 label="Fabricante"
@@ -86,23 +85,11 @@ const CpuForm = ({ closeModal }) => {
                 url={urlMaker}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={4}>
               <TextFieldCustom name="model" label="Modelo" />
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextFieldCustom name="frequency" label="Frecuencia" />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextFieldCustom
-                name="cores"
-                label="Nucleos"
-                type="number"
-                inputProps={{
-                  min: 0,
-                  max: 100,
-                  step: 1,
-                }}
-              />
+            <Grid item xs={12} sm={3}>
+              <TextFieldCustom name="memory" label="Memoria" />
             </Grid>
           </Grid>
           <Box
@@ -126,4 +113,4 @@ const CpuForm = ({ closeModal }) => {
   );
 };
 
-export default CpuForm;
+export default GraphicCardForm;

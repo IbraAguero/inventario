@@ -1,34 +1,46 @@
 import { z } from "zod";
 import mongoose from "mongoose";
 
-export const printerSchema = z.object({
+export const computerSchema = z.object({
   nroinventario: z.string({
     required_error: "El nro de inventario es requerido",
   }),
   nroserie: z.string({
     required_error: "El nro de serie es requerido",
   }),
-  maker: z
+  motherBoard: z
+    .string()
+    .refine((value) => mongoose.Types.ObjectId.isValid(value), {
+      message: "Placa madre inválida (no es un ObjectId válido)",
+    })
+    .optional(),
+  cpu: z
     .string({
-      required_error: "El fabricante es requerido",
+      required_error: "El cpu es requerido",
     })
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {
-      message: "Fabricante inválido (no es un ObjectId válido)",
+      message: "CPU inválido (no es un ObjectId válido)",
     }),
-  model: z
+  hdd: z
     .string({
-      required_error: "El modelo es requerido",
+      required_error: "El disco duro es requerido",
     })
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {
-      message: "Modelo inválido (no es un ObjectId válido)",
+      message: "Disco duro inválido (no es un ObjectId válido)",
     }),
-  type: z
+  ram: z
     .string({
-      required_error: "El tipo es requerido",
+      required_error: "La ram es requerida",
     })
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {
-      message: "Tipo inválido (no es un ObjectId válido)",
+      message: "RAM inválida (no es un ObjectId válido)",
     }),
+  graphicCard: z
+    .string()
+    .refine((value) => mongoose.Types.ObjectId.isValid(value), {
+      message: "Tarjeta grafica inválida (no es un ObjectId válido)",
+    })
+    .optional(),
   place: z
     .string({
       required_error: "El lugar es requerido",

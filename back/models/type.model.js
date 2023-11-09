@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const typeSchema = new mongoose.Schema({
   name: {
@@ -9,12 +9,20 @@ const typeSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['impresora', 'monitor', 'ram'],
+    enum: [
+      "impresora",
+      "monitor",
+      "cpu",
+      "ram",
+      "hdd",
+      "motherBoard",
+      "graficCard",
+    ],
     required: true,
   },
 });
 
-typeSchema.set('toJSON', {
+typeSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
@@ -22,4 +30,4 @@ typeSchema.set('toJSON', {
   },
 });
 
-export default mongoose.model('Type', typeSchema);
+export default mongoose.model("Type", typeSchema);

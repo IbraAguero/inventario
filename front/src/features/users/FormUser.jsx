@@ -12,7 +12,7 @@ import { tokens } from "../../theme";
 import useTitle from "../../hooks/useTitle";
 import { useCreateUserMutation } from "./usersApiSlice";
 import { TextFieldCustom } from "../../components/fields/TextFieldCustom";
-import { SelectFieldCustom } from "../../components/fields/SelectFieldCustom";
+import SelectFieldCustom from "../../components/fields/SelectFieldCustom";
 import PasswordField from "../../components/fields/PasswordField";
 import * as yup from "yup";
 
@@ -70,9 +70,6 @@ const FormPrinter = () => {
     resolver: yupResolver(schema),
     //mode: 'onChange',
   });
-
-  console.log(data);
-  console.log(error);
 
   const { handleSubmit, reset, trigger, formState, watch } = methods;
   const { isSubmitting } = formState;

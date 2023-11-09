@@ -1,14 +1,22 @@
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import {
   useAddOptionMutation,
   useGetOptionsQuery,
 } from "../../app/api/optionsApiSlice";
 import SelectFieldWithMenu from "../../components/fields/SelectFieldWithMenu";
-import { Box, Grid } from "@mui/material";
+import { Alert, Box, Grid } from "@mui/material";
 import { TextFieldCustom } from "../../components/fields/TextFieldCustom";
 import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
+import { useEffect, useState } from "react";
+import { enqueueSnackbar } from "notistack";
+import * as yup from "yup";
+
+const defaultValues = {
+  maker: "",
+  model: "",
+  socket: "",
+};
 
 const schema = yup.object().shape({
   maker: yup.string().required("Fabricante es requerido"),
@@ -16,66 +24,90 @@ const schema = yup.object().shape({
   socket: yup.string().required("Este campo es obligatorio"),
 });
 
-const MotherBoardForm = () => {
+const MotherBoardForm = ({ closeModal }) => {
+  const [errContent, setErrContent] = useState("");
+
   const methods = useForm({
+    defaultValues,
     resolver: yupResolver(schema),
   });
-
-  const url = "computadoras/placa-madre";
-
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { isSubmitting },
   } = methods;
 
-  const { data: optionsMakers, error } = useGetOptionsQuery(
-    "placa-madre/fabricantes"
-  );
+  const urlComponent = "computadoras/placa-madre";
+  const urlMaker = "placa-madre/fabricantes";
 
-  const [addOption, { isSuccess, data: dataAdd, error: errAdd }] =
+  const { data: optionsMakers } = useGetOptionsQuery(urlMaker);
+  const [addOption, { isSuccess, isLoading, data: dataAdd, error: errAdd }] =
     useAddOptionMutation();
 
   const onSubmit = (data) => {
-    addOption({ url, data });
+    addOption({ url: urlComponent, data });
     console.log(data);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      closeModal();
+      enqueueSnackbar("Se agrego correctamente el componente", {
+        variant: "success",
+      });
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    setErrContent(errAdd?.data?.message) ?? "";
+
+    setTimeout(() => {
+      setErrContent("");
+    }, 3000);
+  }, [errAdd]);
+
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={5}>
-            <SelectFieldWithMenu
-              name="maker"
-              label="Fabricante"
-              data={optionsMakers || []}
-              url={url}
-            />
+    <>
+      {errContent && (
+        <Alert severity="error" sx={{ marginBottom: 3 }}>
+          {errContent}
+        </Alert>
+      )}
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} sm={5}>
+              <SelectFieldWithMenu
+                name="maker"
+                label="Fabricante"
+                data={optionsMakers || []}
+                url={urlMaker}
+              />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <TextFieldCustom name="model" label="Modelo" />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextFieldCustom name="socket" label="Socket" />
+            </Grid>
           </Grid>
-          <Grid item xs={12} sm={4}>
-            <TextFieldCustom name="model" label="Modelo" />
-          </Grid>
-          <Grid item xs={12} sm={3}>
-            <TextFieldCustom name="socket" label="Socket" />
-          </Grid>
-        </Grid>
-        <Box
-          display="flex"
-          justifyContent="center"
-          style={{ paddingTop: "5vh" }}
-        >
-          <LoadingButton
-            variant="contained"
-            type="submit"
-            color="primary"
-            //disabled={isSubmitting}
-            //loading={isLoading || isUpdLoading}
+          <Box
+            display="flex"
+            justifyContent="center"
+            style={{ paddingTop: "5vh" }}
           >
-            Enviar
-          </LoadingButton>
-        </Box>
-      </form>
-    </FormProvider>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              color="primary"
+              disabled={isSubmitting}
+              loading={isLoading}
+            >
+              Enviar
+            </LoadingButton>
+          </Box>
+        </form>
+      </FormProvider>
+    </>
   );
 };
 

@@ -3,9 +3,7 @@ import { TextFieldCustom } from "../../../components/fields/TextFieldCustom";
 import { useGetOptionsQuery } from "../../../app/api/optionsApiSlice";
 import { useFormContext } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
-import { useEffect } from "react";
 import SelectFieldWithMenu from "../../../components/fields/SelectFieldWithMenu";
-import modelModel from "../../../../../back/models/model.model";
 
 const TecnicalForm = ({ formField }) => {
   const { nroInventario, nroSerie, maker, model, type } = formField;

@@ -9,14 +9,14 @@ import {
   MenuItem,
   TextField,
   useTheme,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack';
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 
-import EditIcon from '@mui/icons-material/Edit';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add';
+import EditIcon from "@mui/icons-material/Edit";
+import LibraryAddIcon from "@mui/icons-material/LibraryAdd";
+import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
 
 import {
   useAddOptionMutation,
@@ -25,18 +25,18 @@ import {
   useGetOptionQuery,
   useGetOptionsQuery,
   useLazyGetOptionQuery,
-} from '../../app/api/optionsApiSlice';
-import { StyledDialog } from '../styledComponents/StyledDialog';
-import { tokens } from '../../theme';
-import { StyledMenu } from '../styledComponents/StyledMenu';
-import { Controller, useForm, useFormContext } from 'react-hook-form';
-import { useConfirm } from 'material-ui-confirm';
+} from "../../app/api/optionsApiSlice";
+import { StyledDialog } from "../styledComponents/StyledDialog";
+import { tokens } from "../../theme";
+import { StyledMenu } from "../styledComponents/StyledMenu";
+import { Controller, useForm, useFormContext } from "react-hook-form";
+import { useConfirm } from "material-ui-confirm";
 
 const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [modal, setModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [errContent, setErrorContent] = useState('');
+  const [errContent, setErrorContent] = useState("");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { enqueueSnackbar } = useSnackbar();
@@ -58,7 +58,7 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
   const [trigger] = useLazyGetOptionQuery();
 
   const { handleSubmit, control, reset, formState } = useForm({
-    defaultValues: { ...valuesForm, name: '' },
+    defaultValues: { ...valuesForm, name: "" },
   });
 
   const [addOption, { isSuccess, data: dataAdd, error }] =
@@ -80,7 +80,7 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
   const openModal = () => {
     setModal(true);
     handleClose();
-    setErrorContent('');
+    setErrorContent("");
   };
 
   const closeModal = () => {
@@ -89,22 +89,22 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
   };
 
   const handleAddOption = () => {
-    console.log('agregar');
+    console.log("agregar");
     openModal();
     setIsEditing(false);
-    reset({ ...valuesForm, name: '' });
+    reset({ ...valuesForm, name: "" });
   };
 
   const handleEditOption = async () => {
-    console.log('editar');
+    console.log("editar");
     const { data } = await trigger(`${url}/${value}`);
     openModal();
     setIsEditing(true);
-    reset({ ...valuesForm, name: data?.name || '' });
+    reset({ ...valuesForm, name: data?.name || "" });
   };
 
   const handleDeleteOption = async () => {
-    console.log('eliminar');
+    console.log("eliminar");
     const { data } = await trigger(`${url}/${value}`);
     try {
       await confirm({
@@ -112,11 +112,11 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
       });
       const { error: errorDel } = await deleteOption({ url, id: data.id });
       if (!errorDel) {
-        setValueForm(name, '');
+        setValueForm(name, "");
         handleClose();
       } else {
         enqueueSnackbar(errorDel?.data?.message, {
-          variant: 'error',
+          variant: "error",
         });
       }
     } catch (error) {
@@ -160,8 +160,8 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
   return (
     <>
       <IconButton
-        aria-controls={openMenu ? 'basic-menu' : undefined}
-        aria-expanded={openMenu ? 'true' : undefined}
+        aria-controls={openMenu ? "basic-menu" : undefined}
+        aria-expanded={openMenu ? "true" : undefined}
         onClick={handleClick}
         disabled={disabled}
       >
@@ -183,27 +183,27 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
           </MenuItem>,
         ]}
       </StyledMenu>
-      <StyledDialog open={modal} onClose={closeModal} sx={{}}>
+      <StyledDialog open={modal} onClose={closeModal}>
         <DialogTitle
           sx={{
-            fontSize: '18px',
-            fontWeight: '600',
-            textAlign: 'center',
-            color: '#fff',
+            fontSize: "18px",
+            fontWeight: "600",
+            textAlign: "center",
+            color: "#fff",
             margin: 0,
             padding: 1,
           }}
         >
-          {isEditing ? 'Editar ' : 'Agregar '}
+          {isEditing ? "Editar " : "Agregar "}
           {label}
         </DialogTitle>
         <DialogContent
           sx={{
-            margin: '0 5px 5px',
-            padding: '0 2rem 0.5rem',
+            margin: "0 5px 5px",
+            padding: "0 2rem 0.5rem",
             borderRadius: 2,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             background: colors.bgTable,
             gap: 3,
           }}
@@ -212,15 +212,15 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
             <Box
               sx={{
                 marginTop: 5,
-                display: 'flex',
-                flexDirection: 'column',
+                display: "flex",
+                flexDirection: "column",
                 gap: 2,
               }}
             >
               <Controller
                 name="name"
                 control={control}
-                rules={{ required: 'El nombre es requerido' }}
+                rules={{ required: "El nombre es requerido" }}
                 render={({ field, fieldState }) => (
                   <TextField
                     {...field}
@@ -235,7 +235,7 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
               <DialogActions>
                 <Button onClick={closeModal}>Cancelar</Button>
                 <Button type="submit" variant="contained">
-                  {isEditing ? 'Editar' : 'Agregar'}
+                  {isEditing ? "Editar" : "Agregar"}
                 </Button>
               </DialogActions>
             </Box>

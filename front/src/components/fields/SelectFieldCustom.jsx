@@ -4,10 +4,10 @@ import {
   InputLabel,
   MenuItem,
   Select,
-} from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+} from "@mui/material";
+import { Controller, useFormContext } from "react-hook-form";
 
-export const SelectFieldCustom = ({ name, label, data, ...props }) => {
+const SelectFieldCustom = ({ name, label, data, ...props }) => {
   const { control } = useFormContext();
 
   return (
@@ -17,7 +17,7 @@ export const SelectFieldCustom = ({ name, label, data, ...props }) => {
       render={({ field, fieldState }) => {
         const selectedValue = field.value;
         const isValueValid = data?.some((item) => item.id === selectedValue);
-        const fieldValue = isValueValid ? selectedValue : '';
+        const fieldValue = isValueValid ? selectedValue : "";
         return (
           <FormControl error={!!fieldState.error} fullWidth>
             <InputLabel>{label}</InputLabel>
@@ -43,3 +43,5 @@ export const SelectFieldCustom = ({ name, label, data, ...props }) => {
     />
   );
 };
+
+export default SelectFieldCustom;

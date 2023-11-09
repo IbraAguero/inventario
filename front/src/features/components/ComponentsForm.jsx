@@ -11,6 +11,9 @@ import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import MotherBoardForm from "./MotherBoardForm";
 import CpuForm from "./CpuForm";
+import RamForm from "./RamForm";
+import HddForm from "./HddForm";
+import GraphicCardForm from "./GraphicCardForm";
 
 const ComponentsForm = ({ modal, closeModal }) => {
   const theme = useTheme();
@@ -68,30 +71,17 @@ const ComponentsForm = ({ modal, closeModal }) => {
           </Select>
         </Box>
         {selectedComponent && (
-          // Aquí puedes renderizar el resto del formulario
-          <div>
-            {/* Agrega los campos adicionales según el tipo de componente seleccionado */}
-            {selectedComponent === "Placa Madre" && (
-              // Renderiza los campos específicos para la Placa Madre
-              <MotherBoardForm />
-            )}
-            {selectedComponent === "CPU" && (
-              // Renderiza los campos específicos para la CPU
-              <CpuForm closeModal={closeModal} />
-            )}
-            {selectedComponent === "RAM" && (
-              // Renderiza los campos específicos para la RAM
-              <div>Campos para RAM</div>
-            )}
+          <>
+            {selectedComponent === "Placa Madre" && <MotherBoardForm />}
+            {selectedComponent === "CPU" && <CpuForm closeModal={closeModal} />}
+            {selectedComponent === "RAM" && <RamForm closeModal={closeModal} />}
             {selectedComponent === "Disco Duro" && (
-              // Renderiza los campos específicos para el Disco Duro
-              <div>Campos para Disco Duro</div>
+              <HddForm closeModal={closeModal} />
             )}
             {selectedComponent === "Tarjeta Grafica" && (
-              // Renderiza los campos específicos para la Tarjeta Gráfica
-              <div>Campos para Tarjeta Gráfica</div>
+              <GraphicCardForm closeModal={closeModal} />
             )}
-          </div>
+          </>
         )}
       </DialogContent>
     </StyledDialog>

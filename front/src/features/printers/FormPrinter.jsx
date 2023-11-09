@@ -76,6 +76,7 @@ const FormPrinter = () => {
     resolver: yupResolver(currentValidationSchema),
     mode: "onChange",
   });
+
   const { handleSubmit, reset, trigger, formState, watch } = methods;
   const { isSubmitting } = formState;
 

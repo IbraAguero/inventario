@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const printerSchema = new mongoose.Schema(
   {
@@ -15,32 +15,32 @@ const printerSchema = new mongoose.Schema(
     },
     maker: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Maker',
+      ref: "Maker",
       required: true,
     },
     type: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Type',
+      ref: "Type",
       required: true,
     },
     model: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Model',
+      ref: "Model",
       required: true,
     },
     place: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Place',
+      ref: "Place",
       required: true,
     },
     state: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'State',
+      ref: "State",
       required: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
+      ref: "User",
     },
     order: {
       type: String,
@@ -53,8 +53,7 @@ const printerSchema = new mongoose.Schema(
     },
     supplier: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Supplier',
-      required: true,
+      ref: "Supplier",
     },
     mandated: {
       type: String,
@@ -68,7 +67,7 @@ const printerSchema = new mongoose.Schema(
         },
         user: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'User',
+          ref: "User",
         },
         values: [
           {
@@ -99,4 +98,4 @@ const printerSchema = new mongoose.Schema(
 });
  */
 
-export default mongoose.model('Printer', printerSchema);
+export default mongoose.model("Printer", printerSchema);
