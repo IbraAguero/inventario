@@ -6,7 +6,7 @@ import {
   updateState,
   deleteState,
 } from "../controllers/state.controller.js";
-import { stateSchema } from "../schemas/state.schema.js";
+import { stateSchema } from "../Schemas/state.schema.js";
 import verifyJWT from "../middleware/verifyJWT.js";
 import { validateSchema } from "../middleware/validatorSchema.js";
 
