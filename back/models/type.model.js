@@ -12,6 +12,8 @@ const typeSchema = new mongoose.Schema({
     enum: [
       "impresora",
       "monitor",
+      "periferico",
+      "red",
       "cpu",
       "ram",
       "hdd",

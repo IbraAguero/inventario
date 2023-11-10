@@ -1,5 +1,5 @@
 import * as Yup from "yup";
-import printerFormModel from "./printerFormModel";
+import peripheralFormModel from "./peripheralFormModel";
 const {
   formField: {
     nroInventario,
@@ -12,13 +12,13 @@ const {
     supplier,
     order,
   },
-} = printerFormModel;
+} = peripheralFormModel;
 
 export default [
   Yup.object().shape({
     [nroInventario.name]: Yup.string()
       .required(`${nroInventario.requiredErrorMsg}`)
-      .matches(/^[A-Z]{3}-\d{2,}$/, "Formato invalido, Ej: IMP-10"),
+      .matches(/^[A-Z]{2}-\d{2,}$/, "Formato invalido, Ej: IMP-10"),
     [nroSerie.name]: Yup.string().required(`${nroSerie.requiredErrorMsg}`),
     [maker.name]: Yup.string().required(`${maker.requiredErrorMsg}`),
     [model.name]: Yup.string().required(`${maker.requiredErrorMsg}`),

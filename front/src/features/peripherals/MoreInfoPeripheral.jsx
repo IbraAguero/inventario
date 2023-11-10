@@ -9,13 +9,13 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useGetPrintersQuery } from "./printersApiSlice";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import ChangeAccordion from "../../components/ChangeAcordion";
 import useAuth from "../../hooks/useAuth";
+import { useGetPeripheralsQuery } from "./peripheralsApiSlice";
 
-const MoreInfo = () => {
+const MoreInfoPeripheral = () => {
   const { modalOpen, closeModal } = useModal();
 
   const theme = useTheme();
@@ -24,15 +24,15 @@ const MoreInfo = () => {
   const params = useParams();
   const { isAuthenticated } = useAuth();
 
-  const { printer, isLoading } = useGetPrintersQuery("printersList", {
+  const { peripheral, isLoading } = useGetPeripheralsQuery("peripheralsList", {
     skip: !isAuthenticated,
     selectFromResult: ({ data, isLoading }) => ({
       isLoading,
-      printer: data?.entities[params.id],
+      peripheral: data?.entities[params.id],
     }),
   });
 
-  if (isLoading || !printer) {
+  if (isLoading || !peripheral) {
     return (
       <StyledDialog open={modalOpen} onClose={closeModal} fullWidth>
         <Box
@@ -63,7 +63,7 @@ const MoreInfo = () => {
             padding: 1,
           }}
         >
-          Impresora | {printer?.nroinventario}
+          Periferico | {peripheral?.nroinventario}
         </DialogTitle>
         <DialogContent
           sx={{
@@ -85,18 +85,18 @@ const MoreInfo = () => {
               }}
             >
               <Typography variant="h5" gutterBottom align="center">
-                Información de la Impresora
+                Información del Periferico
               </Typography>
               <Grid container spacing={2} textAlign="center">
                 {Object.entries({
-                  "Nro. Inventario": printer?.nroinventario,
-                  "Nro. Serie": printer?.nroserie,
-                  Fabricante: printer?.maker.name,
-                  Tipo: printer?.type.name,
-                  Modelo: printer?.model.name,
-                  Lugar: printer?.place.name,
-                  Estado: printer?.state.name,
-                  "Agregada por": printer?.createdBy?.username,
+                  "Nro. Inventario": peripheral?.nroinventario,
+                  "Nro. Serie": peripheral?.nroserie,
+                  Fabricante: peripheral?.maker.name,
+                  Tipo: peripheral?.type.name,
+                  Modelo: peripheral?.model.name,
+                  Lugar: peripheral?.place.name,
+                  Estado: peripheral?.state.name,
+                  "Agregada por": peripheral?.createdBy?.name,
                 }).map(([label, value]) => (
                   <Grid item xs={6} key={label}>
                     <Typography variant="body1">
@@ -108,8 +108,8 @@ const MoreInfo = () => {
               <Typography variant="h5" gutterBottom align="center">
                 Historial de cambios
               </Typography>
-              {printer?.changes && printer?.changes?.length > 0 ? (
-                <ChangeAccordion changes={printer.changes} />
+              {peripheral?.changes && peripheral?.changes?.length > 0 ? (
+                <ChangeAccordion changes={peripheral.changes} />
               ) : (
                 <Typography align="center">
                   Aun no se registraron cambios en el dispositivo
@@ -122,4 +122,4 @@ const MoreInfo = () => {
     </>
   );
 };
-export default MoreInfo;
+export default MoreInfoPeripheral;

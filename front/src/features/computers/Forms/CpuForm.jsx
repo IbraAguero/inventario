@@ -10,7 +10,7 @@ import SelectFieldCustom from "../../../components/fields/SelectFieldCustom";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../../theme";
 import { useGetOptionsQuery } from "../../../app/api/optionsApiSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const defaultValues = {
@@ -21,20 +21,24 @@ const defaultValues = {
 const CpuForm = ({ title, modalAdd, closeModalAdd }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [maker, setMaker] = useState([]);
+  const [uniqueMakers, setUniqueMakers] = useState([]);
 
   const { data, error, isLoading } = useGetOptionsQuery("computadoras/cpu");
 
-  const uniqueMakers = [];
-  const seenIds = new Set();
+  useEffect(() => {
+    const seenIds = new Set();
+    const updatedMakers = data?.reduce((acc, component) => {
+      const id = component.maker._id;
+      if (!seenIds.has(id)) {
+        seenIds.add(id);
+        acc.push({ id, name: component.maker.name });
+      }
+      return acc;
+    }, []);
 
-  data?.forEach((component) => {
-    const id = component.maker._id;
-    if (!seenIds.has(id)) {
-      seenIds.add(id);
-      uniqueMakers.push({ id, name: component.maker.name });
-    }
-  });
+    setUniqueMakers(updatedMakers);
+  }, [data]);
+
   console.log(uniqueMakers);
 
   /* const filteredModels = data?.filter(
@@ -45,6 +49,9 @@ const CpuForm = ({ title, modalAdd, closeModalAdd }) => {
 
   const { handleSubmit, reset, trigger, formState, watch } = methods;
   const { isSubmitting } = formState;
+
+  const maker = watch("maker");
+  console.log(maker);
 
   const onSubmit = handleSubmit(async (data) => {
     console.log(data);
@@ -91,14 +98,6 @@ const CpuForm = ({ title, modalAdd, closeModalAdd }) => {
                 data={uniqueMakers}
                 fullWidth
               />
-
-              {/* <SelectFieldCustom
-                name="model"
-                label="Modelo"
-                data={filteredModels?.map((component) => component.model) || []}
-                value={selectedModel}
-                onChange={(event) => setSelectedModel(event.target.value)}
-              /> */}
               <DialogActions>
                 <Button onClick={closeModalAdd}>Cancelar</Button>
                 <Button type="submit" variant="contained">

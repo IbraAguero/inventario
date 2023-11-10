@@ -26,6 +26,12 @@ import Prefetch from "./features/auth/Prefetch";
 import UserPage from "./features/users/UserPage";
 import ComponentsPage from "./features/components/ComponentesPage";
 import FormComputer from "./features/computers/FormComputer";
+import FormMonitor from "./features/monitors/FormMonitor";
+import MoreInfoMonitor from "./features/monitors/MoreInfoMonitor";
+import FormPeripheral from "./features/peripherals/FormPeripheral";
+import MoreInfoPeripheral from "./features/peripherals/MoreInfoPeripheral";
+import FormNetwork from "./features/networks/FormNetwork";
+import MoreInfoNetwork from "./features/networks/MoreInfoNetwork";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -95,6 +101,9 @@ function App() {
 
                     <Route path="monitores">
                       <Route index element={<MonitorPage />} />
+                      <Route path=":id" element={<MoreInfoMonitor />} />
+                      <Route path="agregar" element={<FormMonitor />} />
+                      <Route path="editar/:id" element={<FormMonitor />} />
                     </Route>
 
                     <Route path="impresoras">
@@ -106,10 +115,16 @@ function App() {
 
                     <Route path="perifericos">
                       <Route index element={<PeripheralPage />} />
+                      <Route path=":id" element={<MoreInfoPeripheral />} />
+                      <Route path="agregar" element={<FormPeripheral />} />
+                      <Route path="editar/:id" element={<FormPeripheral />} />
                     </Route>
 
                     <Route path="redes">
                       <Route index element={<NetworkPage />} />
+                      <Route path=":id" element={<MoreInfoNetwork />} />
+                      <Route path="agregar" element={<FormNetwork />} />
+                      <Route path="editar/:id" element={<FormNetwork />} />
                     </Route>
 
                     <Route path="componentes">
@@ -137,6 +152,21 @@ function App() {
                 <Route path=":id" element={<MoreInfo />} />
                 <Route path="agregar" element={<FormPrinter />} />
                 <Route path="editar/:id" element={<FormPrinter />} />
+              </Route>
+              <Route path="monitores">
+                <Route path=":id" element={<MoreInfoMonitor />} />
+                <Route path="agregar" element={<FormMonitor />} />
+                <Route path="editar/:id" element={<FormMonitor />} />
+              </Route>
+              <Route path="perifericos">
+                <Route path=":id" element={<MoreInfoPeripheral />} />
+                <Route path="agregar" element={<FormPeripheral />} />
+                <Route path="editar/:id" element={<FormPeripheral />} />
+              </Route>
+              <Route path="redes">
+                <Route path=":id" element={<MoreInfoNetwork />} />
+                <Route path="agregar" element={<FormNetwork />} />
+                <Route path="editar/:id" element={<FormNetwork />} />
               </Route>
               <Route path="computadoras">
                 {/* <Route path=":id" element={<MoreInfo />} /> */}

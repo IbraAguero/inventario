@@ -1,7 +1,9 @@
-import Type from '../models/type.model.js';
-import Printer from '../models/printer.model.js';
-import mongoose from 'mongoose';
-import { transformType } from '../utils/transformType.js';
+import Type from "../models/type.model.js";
+import Printer from "../models/printer.model.js";
+import Monitor from "../models/monitor.model.js";
+import Peripheral from "../models/peripheral.model.js";
+import mongoose from "mongoose";
+import { transformType } from "../utils/transformType.js";
 
 export const getTypes = async (req, res) => {
   const type = transformType(req.params.type);
@@ -15,13 +17,13 @@ export const getType = async (req, res) => {
   const typeParam = transformType(req.params.type);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'ID del tipo inválido' });
+    return res.status(400).json({ message: "ID del tipo inválido" });
   }
 
   const type = await Type.findById(id);
 
   if (!type || type.type !== typeParam) {
-    return res.status(404).json({ message: 'Tipo no encontrado' });
+    return res.status(404).json({ message: "Tipo no encontrado" });
   }
 
   return res.json(type);
@@ -35,7 +37,7 @@ export const createType = async (req, res) => {
 
   if (typeFound)
     return res.status(400).json({
-      message: 'Ya existe un tipo con el mismo nombre',
+      message: "Ya existe un tipo con el mismo nombre",
     });
 
   const newType = new Type({
@@ -54,7 +56,7 @@ export const deleteType = async (req, res) => {
   const type = transformType(req.params.type);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'ID del tipo inválido' });
+    return res.status(400).json({ message: "ID del tipo inválido" });
   }
 
   const isUsed = await isTypeInUse(id);
@@ -62,13 +64,13 @@ export const deleteType = async (req, res) => {
   if (isUsed) {
     return res.status(400).json({
       message:
-        'No puedes eliminar este tipo porque está en uso en alguna categoría',
+        "No puedes eliminar este tipo porque está en uso en alguna categoría",
     });
   }
 
   const typeDelete = await Type.findOneAndDelete({ _id: id, type });
   if (!typeDelete)
-    return res.status(404).json({ message: 'Tipo no encontrado' });
+    return res.status(404).json({ message: "Tipo no encontrado" });
 
   return res.sendStatus(204);
 };
@@ -79,14 +81,14 @@ export const updateType = async (req, res) => {
   const type = transformType(req.params.type);
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(400).json({ message: 'ID del tipo inválido' });
+    return res.status(400).json({ message: "ID del tipo inválido" });
   }
 
   const typeFound = await Type.findOne({ name });
 
   if (typeFound)
     return res.status(400).json({
-      message: 'Ya existe un tipo con el mismo nombre',
+      message: "Ya existe un tipo con el mismo nombre",
     });
 
   const typeEdit = await Type.findOneAndUpdate(
@@ -97,15 +99,15 @@ export const updateType = async (req, res) => {
     }
   );
 
-  if (!typeEdit) return res.status(404).json({ message: 'Tipo no encontrado' });
+  if (!typeEdit) return res.status(404).json({ message: "Tipo no encontrado" });
   return res.json(typeEdit);
 };
 
 async function isTypeInUse(id) {
   const printerExists = await Printer.exists({ model: id });
-  //const monitorExists = await Monitor.exists({ model: id });
+  const monitorExists = await Monitor.exists({ model: id });
+  const peripheralExists = await Peripheral.exists({ model: id });
   //const computerExists = await Computer.exists({ model: id });
-  //const peripheralExists = await Peripheral.exists({ model: id });
 
-  return printerExists; //|| monitorExists || computerExists || peripheralExists;
+  return printerExists || monitorExists || peripheralExists; //|| computerExists || peripheralExists;
 }

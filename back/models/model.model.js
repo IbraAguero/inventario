@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const modelSchema = new mongoose.Schema({
   name: {
@@ -9,17 +9,17 @@ const modelSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ['impresora', 'monitor'],
+    enum: ["impresora", "monitor", "periferico", "red"],
     required: true,
   },
   maker: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Maker',
+    ref: "Maker",
     required: true,
   },
 });
 
-modelSchema.set('toJSON', {
+modelSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
@@ -27,4 +27,4 @@ modelSchema.set('toJSON', {
   },
 });
 
-export default mongoose.model('Model', modelSchema);
+export default mongoose.model("Model", modelSchema);

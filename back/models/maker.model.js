@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const makerSchema = new mongoose.Schema({
   name: {
@@ -9,27 +9,29 @@ const makerSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: [
-      'impresora',
-      'monitor',
-      'cpu',
-      'ram',
-      'hdd',
-      'motherBoard',
-      'graficCard',
+      "impresora",
+      "monitor",
+      "periferico",
+      "red",
+      "cpu",
+      "ram",
+      "hdd",
+      "motherBoard",
+      "graficCard",
     ],
     required: true,
   },
   models: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Model',
+      ref: "Model",
     },
   ],
 });
 
 makerSchema.index({ name: 1, type: 1 }, { unique: true });
 
-makerSchema.set('toJSON', {
+makerSchema.set("toJSON", {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
@@ -37,4 +39,4 @@ makerSchema.set('toJSON', {
   },
 });
 
-export default mongoose.model('Maker', makerSchema);
+export default mongoose.model("Maker", makerSchema);
