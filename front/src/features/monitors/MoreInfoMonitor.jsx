@@ -20,6 +20,7 @@ const MoreInfoMonitor = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
 
   const params = useParams();
   const { isAuthenticated } = useAuth();
@@ -84,7 +85,12 @@ const MoreInfoMonitor = () => {
                 gap: 4,
               }}
             >
-              <Typography variant="h5" gutterBottom align="center">
+              <Typography
+                variant="h5"
+                gutterBottom
+                align="center"
+                color={textColor}
+              >
                 Información del Monitor
               </Typography>
               <Grid container spacing={2} textAlign="center">
@@ -105,7 +111,12 @@ const MoreInfoMonitor = () => {
                   </Grid>
                 ))}
               </Grid>
-              <Typography variant="h5" gutterBottom align="center">
+              <Typography
+                variant="h5"
+                gutterBottom
+                align="center"
+                color={textColor}
+              >
                 Historial de cambios
               </Typography>
               {monitor?.changes && monitor?.changes?.length > 0 ? (

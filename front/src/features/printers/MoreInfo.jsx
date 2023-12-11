@@ -20,6 +20,7 @@ const MoreInfo = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
 
   const params = useParams();
   const { isAuthenticated } = useAuth();
@@ -84,7 +85,12 @@ const MoreInfo = () => {
                 gap: 4,
               }}
             >
-              <Typography variant="h5" gutterBottom align="center">
+              <Typography
+                variant="h5"
+                gutterBottom
+                align="center"
+                color={textColor}
+              >
                 Información de la Impresora
               </Typography>
               <Grid container spacing={2} textAlign="center">
@@ -96,7 +102,7 @@ const MoreInfo = () => {
                   Modelo: printer?.model.name,
                   Lugar: printer?.place.name,
                   Estado: printer?.state.name,
-                  "Agregada por": printer?.createdBy?.username,
+                  "Agregada por": printer?.createdBy?.name,
                 }).map(([label, value]) => (
                   <Grid item xs={6} key={label}>
                     <Typography variant="body1">
@@ -105,7 +111,12 @@ const MoreInfo = () => {
                   </Grid>
                 ))}
               </Grid>
-              <Typography variant="h5" gutterBottom align="center">
+              <Typography
+                variant="h5"
+                gutterBottom
+                align="center"
+                color={textColor}
+              >
                 Historial de cambios
               </Typography>
               {printer?.changes && printer?.changes?.length > 0 ? (

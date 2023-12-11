@@ -1,9 +1,11 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 const TablePrinter = ({ data, columns, apiRef, isLoading }) => {
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const colors = tokens(theme.palette.mode);
 
   return (
@@ -52,6 +54,17 @@ const TablePrinter = ({ data, columns, apiRef, isLoading }) => {
       <DataGrid
         apiRef={apiRef}
         columns={columns}
+        columnVisibilityModel={
+          isMobile
+            ? {
+                nroserie: false,
+                createdAt: false,
+                updatedAt: false,
+                model: false,
+                maker: false,
+              }
+            : undefined
+        }
         rows={data || []}
         density="compact"
         rowSelection={false}

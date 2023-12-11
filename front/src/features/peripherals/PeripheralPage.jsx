@@ -1,4 +1,11 @@
-import { Box, Button, Typography, debounce, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  debounce,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
 import { useGridApiRef } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
@@ -21,6 +28,8 @@ const PeripheralPage = () => {
   useTitle("Perifericos | Inventario");
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const colors = tokens(theme.palette.mode);
   const { openModal } = useModal();
   const location = useLocation();
@@ -223,16 +232,17 @@ const PeripheralPage = () => {
           flex={1}
         >
           <Box display="flex" alignItems="center" gap={2}>
-            <Typography variant="h3" fontWeight="600">
-              Perifericos
-            </Typography>
+            {!isMobile && (
+              <Typography variant="h3" fontWeight="600">
+                Perifericos
+              </Typography>
+            )}
             <Button
               component={Link}
               to="agregar"
               onClick={openModal}
               state={{ background: location }}
               variant="contained"
-              size="small"
               color="primary"
             >
               Agregar

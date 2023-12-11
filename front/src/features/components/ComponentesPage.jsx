@@ -64,7 +64,13 @@ const ComponentsPage = () => {
         alignItems="center"
       >
         <Box></Box>
-        <Tabs value={value} onChange={handleChange} centered>
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          variant="scrollable"
+          scrollButtons="auto"
+          allowScrollButtonsMobile
+        >
           <Tab label="Placa Madre" {...a11yProps(0)} />
           <Tab label="CPU" {...a11yProps(1)} />
           <Tab label="RAM" {...a11yProps(2)} />
@@ -81,18 +87,19 @@ const ComponentsPage = () => {
         marginTop={3}
         borderRadius={3}
         boxShadow={8}
+        padding="5px"
         height="70vh"
         display="flex"
         flexDirection="column"
       >
         <Box
-          margin={1}
+          bgcolor={colors.bgTable}
           borderRadius={3}
-          boxShadow={8}
-          padding="5px"
-          height="83vh"
-          display="flex"
-          flexDirection="column"
+          padding={1.5}
+          paddingTop={2}
+          paddingBottom={0}
+          height="62vh"
+          flex={15}
         >
           <Box
             height="100%"

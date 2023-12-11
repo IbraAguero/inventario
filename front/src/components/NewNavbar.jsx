@@ -1,57 +1,57 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
-import LightModeOutlinedIcon from '@mui/icons-material/LightModeOutlined';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { useTheme } from '@emotion/react';
-import { useDispatch } from 'react-redux';
-import { tokens } from '../theme';
-import { useSendLogoutMutation } from '../features/auth/authApiSlice';
-import { setMode } from '../app/globalSlice';
-import { StyledMenu } from './styledComponents/StyledMenu';
-import LogoutIcon from '@mui/icons-material/Logout';
-import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
-import useAuth from '../hooks/useAuth';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Button from "@mui/material/Button";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "@emotion/react";
+import { useDispatch } from "react-redux";
+import { tokens } from "../theme";
+import { useSendLogoutMutation } from "../features/auth/authApiSlice";
+import { setMode } from "../app/globalSlice";
+import { StyledMenu } from "./styledComponents/StyledMenu";
+import LogoutIcon from "@mui/icons-material/Logout";
+import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
+import useAuth from "../hooks/useAuth";
 
 const pages = [
   {
-    label: 'Inicio',
-    route: '/',
+    label: "Inicio",
+    route: "/",
   },
   {
-    label: 'Computadoras',
-    route: '/computadoras',
+    label: "Computadoras",
+    route: "/computadoras",
   },
   {
-    label: 'Monitores',
-    route: '/monitores',
+    label: "Monitores",
+    route: "/monitores",
   },
   {
-    label: 'Impresoras',
-    route: '/impresoras',
+    label: "Impresoras",
+    route: "/impresoras",
   },
   {
-    label: 'Perifericos',
-    route: '/perifericos',
+    label: "Perifericos",
+    route: "/perifericos",
   },
   {
-    label: 'Redes',
-    route: '/redes',
+    label: "Redes",
+    route: "/redes",
   },
   {
-    label: 'Componentes',
-    route: '/componentes',
+    label: "Componentes",
+    route: "/componentes",
   },
 ];
 
@@ -89,12 +89,12 @@ function NewNavbar() {
 
   const handleUsers = () => {
     handleCloseUserMenu();
-    navigate('/usuarios');
+    navigate("/usuarios");
   };
 
   const handleLogout = () => {
     handleCloseUserMenu();
-    navigate('/login');
+    navigate("/login");
     sendLogout();
   };
 
@@ -109,11 +109,11 @@ function NewNavbar() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: "none", md: "flex" },
               fontWeight: 700,
-              letterSpacing: '.1rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".1rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             Inventario
@@ -122,7 +122,7 @@ function NewNavbar() {
           <Box
             sx={{
               flexGrow: 1,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
             }}
           >
             <IconButton
@@ -139,18 +139,18 @@ function NewNavbar() {
               id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
               sx={{
-                display: { xs: 'block', md: 'none' },
+                display: { xs: "block", md: "none" },
               }}
             >
               {pages.map((page) => (
@@ -159,7 +159,7 @@ function NewNavbar() {
                     component={NavLink}
                     to={page.route}
                     textAlign="center"
-                    style={{ textDecoration: 'none', color: 'inherit' }}
+                    style={{ textDecoration: "none", color: "inherit" }}
                   >
                     {page.label}
                   </Typography>
@@ -174,21 +174,21 @@ function NewNavbar() {
             href="/"
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
               fontWeight: 700,
-              letterSpacing: '.1rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".1rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             Inventario
           </Typography>
           <Box
             sx={{
-              justifyContent: 'center',
+              justifyContent: "center",
               flexGrow: 1,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: "none", md: "flex" },
             }}
           >
             {pages.map(({ route, label }) => (
@@ -202,12 +202,12 @@ function NewNavbar() {
                   my: 2,
                   paddingLeft: 2,
                   paddingRight: 2,
-                  color: 'white',
-                  display: 'block',
-                  borderRadius: '0',
-                  textAlign: 'center',
-                  borderBottom: pathname === route && '2px solid #fff',
-                  '&:hover': { backgroundColor: 'transparent' },
+                  color: "white",
+                  display: "block",
+                  borderRadius: "0",
+                  textAlign: "center",
+                  borderBottom: pathname === route && "2px solid #fff",
+                  "&:hover": { backgroundColor: "transparent" },
                 }}
               >
                 {label}
@@ -215,35 +215,35 @@ function NewNavbar() {
             ))}
           </Box>
           <Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
+            <Box sx={{ display: "flex", gap: 1 }}>
               <IconButton
-                sx={{ color: '#ffffff' }}
+                sx={{ color: "#ffffff" }}
                 onClick={() => dispatch(setMode())}
               >
-                {theme.palette.mode === 'dark' ? (
-                  <DarkModeOutlinedIcon sx={{ fontSize: '22px' }} />
+                {theme.palette.mode === "dark" ? (
+                  <DarkModeOutlinedIcon sx={{ fontSize: "22px" }} />
                 ) : (
-                  <LightModeOutlinedIcon sx={{ fontSize: '22px' }} />
+                  <LightModeOutlinedIcon sx={{ fontSize: "22px" }} />
                 )}
               </IconButton>
               <IconButton
-                sx={{ color: '#ffffff' }}
+                sx={{ color: "#ffffff" }}
                 onClick={handleOpenUserMenu}
               >
-                <AccountCircleOutlinedIcon sx={{ fontSize: '25px' }} />
+                <AccountCircleOutlinedIcon sx={{ fontSize: "25px" }} />
               </IconButton>
               <StyledMenu
-                sx={{ mt: '45px' }}
+                sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}

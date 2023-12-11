@@ -1,5 +1,7 @@
-import User from '../models/user.model.js';
-import bcrypt from 'bcrypt';
+import User from "../models/user.model.js";
+import bcrypt from "bcrypt";
+import mongoose from "mongoose";
+
 //import Note from '../models/Note.js';
 
 // @desc Obtener todos los usuarios
@@ -7,11 +9,11 @@ import bcrypt from 'bcrypt';
 // @access Privado
 export const getAllUsers = async (req, res) => {
   // Obtener todos los usuarios de MongoDB
-  const users = await User.find().select('-password').lean();
+  const users = await User.find().select("-password").lean();
 
   // Si no hay usuarios
   if (!users?.length) {
-    return res.status(400).json({ message: 'No se encontraron usuarios' });
+    return res.status(400).json({ message: "No se encontraron usuarios" });
   }
 
   res.json(users);
@@ -25,12 +27,12 @@ export const createNewUser = async (req, res) => {
 
   // Comprobar si ya existe el nombre de usuario
   const duplicate = await User.findOne({ email })
-    .collation({ locale: 'en', strength: 2 })
+    .collation({ locale: "en", strength: 2 })
     .lean()
     .exec();
 
   if (duplicate) {
-    return res.status(409).json({ message: 'El email ya esta en uso' });
+    return res.status(409).json({ message: "El email ya esta en uso" });
   }
 
   // Hashear la contraseña
@@ -53,7 +55,7 @@ export const createNewUser = async (req, res) => {
       newUser: userSaved,
     });
   } else {
-    res.status(400).json({ message: 'Datos de usuario no válidos' });
+    res.status(400).json({ message: "Datos de usuario no válidos" });
   }
 };
 
@@ -61,74 +63,87 @@ export const createNewUser = async (req, res) => {
 // @route PATCH /users
 // @access Privado
 export const updateUser = async (req, res) => {
-  const { id, name, lastName, roles, active, password } = req.body;
+  try {
+    const id = req.params.id;
+    const { name, lastName, email, rol, active, password } = req.validData;
 
-  // Confirmar los datos
-  if (
-    !id ||
-    !name ||
-    !Array.isArray(roles) ||
-    !roles.length ||
-    typeof active !== 'boolean'
-  ) {
-    return res.status(400).json({
-      message: 'Todos los campos excepto la contraseña son obligatorios',
-    });
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "ID de fabricante inválido" });
+    }
+
+    // ¿Existe el usuario a actualizar?
+    const user = await User.findById(id).exec();
+
+    if (!user) {
+      return res.status(400).json({ message: "Usuario no encontrado" });
+    }
+
+    // Comprobar duplicados
+    if (email) {
+      const duplicate = await User.findOne({ email })
+        .collation({ locale: "en", strength: 2 })
+        .lean()
+        .exec();
+
+      // Permitir actualizaciones en el usuario original
+      if (duplicate && duplicate?._id.toString() !== id) {
+        return res.status(409).json({ message: "Email duplicado" });
+      }
+    }
+
+    if (name) {
+      user.name = name;
+    }
+    if (lastName) {
+      user.lastName = lastName;
+    }
+    if (rol) {
+      user.rol = rol;
+    }
+    if (email) {
+      user.email = email;
+    }
+    if (active !== undefined) {
+      user.active = active;
+    }
+
+    if (password) {
+      user.password = await bcrypt.hash(password, 10); // salt rounds
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({ message: `${updatedUser.name} actualizado` });
+  } catch (error) {
+    return res.status(404).json({ error: error.message });
   }
-
-  // ¿Existe el usuario a actualizar?
-  const user = await User.findById(id).exec();
-
-  if (!user) {
-    return res.status(400).json({ message: 'Usuario no encontrado' });
-  }
-
-  // Comprobar duplicados
-  const duplicate = await User.findOne({ username })
-    .collation({ locale: 'en', strength: 2 })
-    .lean()
-    .exec();
-
-  // Permitir actualizaciones en el usuario original
-  if (duplicate && duplicate?._id.toString() !== id) {
-    return res.status(409).json({ message: 'Nombre de usuario duplicado' });
-  }
-
-  user.username = username;
-  user.roles = roles;
-  user.active = active;
-
-  if (password) {
-    // Hashear la contraseña
-    user.password = await bcrypt.hash(password, 10); // salt rounds
-  }
-
-  const updatedUser = await user.save();
-
-  res.json({ message: `${updatedUser.username} actualizado` });
 };
 
 // @desc Eliminar un usuario
 // @route DELETE /users
 // @access Privado
 export const deleteUser = async (req, res) => {
-  const { id } = req.body;
+  try {
+    const { id } = req.body;
 
-  // Confirmar los datos
-  if (!id) {
-    return res.status(400).json({ message: 'Se requiere el ID de usuario' });
+    // Confirmar los datos
+    if (!id) {
+      return res.status(400).json({ message: "Se requiere el ID de usuario" });
+    }
+
+    // ¿Existe el usuario a eliminar?
+    const user = await User.findById(id).exec();
+
+    if (!user) {
+      return res.status(400).json({ message: "Usuario no encontrado" });
+    }
+
+    const result = await user.deleteOne();
+
+    const reply = `Nombre de usuario ${result.username} con ID ${result._id} eliminado`;
+
+    res.json(reply);
+  } catch (error) {
+    return res.status(404).json({ error: error.message });
   }
-
-  // ¿Existe el usuario a eliminar?
-  const user = await User.findById(id).exec();
-
-  if (!user) {
-    return res.status(400).json({ message: 'Usuario no encontrado' });
-  }
-
-  const result = await user.deleteOne();
-
-  const reply = `Nombre de usuario ${result.username} con ID ${result._id} eliminado`;
-
-  res.json(reply);
 };

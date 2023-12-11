@@ -1,5 +1,5 @@
 html {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 * {
@@ -29,4 +29,26 @@ html {
 .button-menu:hover {
   background-color: #fff; /* Color de fondo en hover */
   /* Otros estilos de hover si es necesario */
+}
+
+.statDeviceContainer {
+  overflow: hidden;
+  padding: 60px 0;
+  background: white;
+  white-space: nowrap;
+  position: relative;
+}
+
+.statDeviceWrapper {
+  display: flex;
+  animation: 50s slide infinite linear;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
 }

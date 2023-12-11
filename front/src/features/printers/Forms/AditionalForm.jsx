@@ -1,13 +1,16 @@
-import { Grid, Typography } from '@mui/material';
-import useAuth from '../../../hooks/useAuth';
-import { useGetOptionsQuery } from '../../../app/api/optionsApiSlice';
-import SelectFieldWithMenu from '../../../components/fields/SelectFieldWithMenu';
-import { TextFieldCustom } from '../../../components/fields/TextFieldCustom';
+import { Grid, Typography, useTheme } from "@mui/material";
+import useAuth from "../../../hooks/useAuth";
+import { useGetOptionsQuery } from "../../../app/api/optionsApiSlice";
+import SelectFieldWithMenu from "../../../components/fields/SelectFieldWithMenu";
+import { TextFieldCustom } from "../../../components/fields/TextFieldCustom";
 
 const AditionalForm = ({ formField }) => {
   const { place, state, supplier, order, comment, mandated } = formField;
 
   const { isAuthenticated } = useAuth();
+
+  const theme = useTheme();
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
 
   const { data: optionsPlaces, error: errPlaces } = useGetOptionsQuery(
     place.url,
@@ -28,8 +31,14 @@ const AditionalForm = ({ formField }) => {
 
   return (
     <>
-      <Typography variant="h5" gutterBottom align="center" mb="2rem">
-        Informacion Tecnica
+      <Typography
+        variant="h5"
+        gutterBottom
+        align="center"
+        mb="2rem"
+        color={textColor}
+      >
+        Informacion Adicional
       </Typography>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>

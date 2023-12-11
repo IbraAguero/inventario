@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import { TextFieldCustom } from "../../../components/fields/TextFieldCustom";
 import { useGetOptionsQuery } from "../../../app/api/optionsApiSlice";
 import { useFormContext } from "react-hook-form";
@@ -8,6 +8,9 @@ import SelectFieldWithMenu from "../../../components/fields/SelectFieldWithMenu"
 const TecnicalForm = ({ formField }) => {
   const { nroInventario, nroSerie, maker, model, type } = formField;
   const { watch, setValue } = useFormContext();
+
+  const theme = useTheme();
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
 
   const makerValue = watch(maker.name);
 
@@ -33,7 +36,13 @@ const TecnicalForm = ({ formField }) => {
 
   return (
     <>
-      <Typography variant="h5" gutterBottom align="center" mb="2rem">
+      <Typography
+        variant="h5"
+        gutterBottom
+        align="center"
+        mb="2rem"
+        color={textColor}
+      >
         Informacion Tecnica
       </Typography>
       <Grid container spacing={3}>

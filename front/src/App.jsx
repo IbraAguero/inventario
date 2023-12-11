@@ -32,6 +32,7 @@ import FormPeripheral from "./features/peripherals/FormPeripheral";
 import MoreInfoPeripheral from "./features/peripherals/MoreInfoPeripheral";
 import FormNetwork from "./features/networks/FormNetwork";
 import MoreInfoNetwork from "./features/networks/MoreInfoNetwork";
+import MoreInfoComputer from "./features/computers/MoreInfoComputer";
 
 function App() {
   const mode = useSelector((state) => state.global.mode);
@@ -94,7 +95,7 @@ function App() {
 
                     <Route path="computadoras">
                       <Route index element={<ComputerPage />} />
-                      {/* <Route path=":id" element={<MoreInfo />} /> */}
+                      <Route path=":id" element={<MoreInfoComputer />} />
                       <Route path="agregar" element={<FormComputer />} />
                       <Route path="editar/:id" element={<FormComputer />} />
                     </Route>
@@ -169,7 +170,7 @@ function App() {
                 <Route path="editar/:id" element={<FormNetwork />} />
               </Route>
               <Route path="computadoras">
-                {/* <Route path=":id" element={<MoreInfo />} /> */}
+                <Route path=":id" element={<MoreInfoComputer />} />
                 <Route path="agregar" element={<FormComputer />} />
                 <Route path="editar/:id" element={<FormComputer />} />
               </Route>

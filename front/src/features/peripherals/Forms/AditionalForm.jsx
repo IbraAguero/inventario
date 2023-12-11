@@ -1,11 +1,14 @@
-import { Grid, Typography } from '@mui/material';
-import useAuth from '../../../hooks/useAuth';
-import { useGetOptionsQuery } from '../../../app/api/optionsApiSlice';
-import SelectFieldWithMenu from '../../../components/fields/SelectFieldWithMenu';
-import { TextFieldCustom } from '../../../components/fields/TextFieldCustom';
+import { Grid, Typography, useTheme } from "@mui/material";
+import useAuth from "../../../hooks/useAuth";
+import { useGetOptionsQuery } from "../../../app/api/optionsApiSlice";
+import SelectFieldWithMenu from "../../../components/fields/SelectFieldWithMenu";
+import { TextFieldCustom } from "../../../components/fields/TextFieldCustom";
 
 const AditionalForm = ({ formField }) => {
   const { place, state, supplier, order, comment, mandated } = formField;
+
+  const theme = useTheme();
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
 
   const { isAuthenticated } = useAuth();
 
@@ -28,7 +31,13 @@ const AditionalForm = ({ formField }) => {
 
   return (
     <>
-      <Typography variant="h5" gutterBottom align="center" mb="2rem">
+      <Typography
+        variant="h5"
+        gutterBottom
+        align="center"
+        mb="2rem"
+        color={textColor}
+      >
         Informacion Tecnica
       </Typography>
       <Grid container spacing={3}>

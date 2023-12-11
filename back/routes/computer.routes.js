@@ -4,6 +4,8 @@ import { Router } from "express";
 import {
   getComputers,
   createComputer,
+  updateComputer,
+  deleteComputer,
 } from "../controllers/computer.controller.js";
 import verifyJWT from "../middleware/verifyJWT.js";
 import cpuRoutes from "../routes/cpu.routes.js";
@@ -19,10 +21,10 @@ const router = Router();
 router.use(verifyJWT);
 
 router.get("/", getComputers);
+//router.get("/:id", getComputer);
 router.post("/", validateSchema(computerSchema), createComputer);
-//router.get('/:id', getComputer);
-//router.put('/:id', updateComputer);
-//router.delete('/:id', deleteComputer);
+router.put("/:id", validateSchema(computerSchema.partial()), updateComputer);
+router.delete("/:id", deleteComputer);
 
 //router.use('/impresoras', authRequired, extractType, makerRoutes);
 

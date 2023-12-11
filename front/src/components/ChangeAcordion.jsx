@@ -10,23 +10,23 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useGetUsersQuery } from '../features/users/usersApiSlice.js';
+} from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useGetUsersQuery } from "../features/users/usersApiSlice.js";
 
 const ChangeAccordion = ({ changes }) => {
   const formatDate = (dateString) => {
     const options = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     };
-    return new Date(dateString).toLocaleDateString('es-ES', options);
+    return new Date(dateString).toLocaleDateString("es-ES", options);
   };
 
-  const { data, error, isError, isLoading } = useGetUsersQuery('usersList', {
+  const { data, error, isError, isLoading } = useGetUsersQuery("usersList", {
     pollingInterval: 30000,
     refetchOnFocus: true,
   });
@@ -36,8 +36,10 @@ const ChangeAccordion = ({ changes }) => {
     <Box>
       {changes.map((change, index) => (
         <Accordion key={index}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon sx={{ color: "white" }} />}
+          >
+            <Typography color="white">
               Cambio #{index + 1} - {formatDate(change.date)}
             </Typography>
           </AccordionSummary>
@@ -46,20 +48,30 @@ const ChangeAccordion = ({ changes }) => {
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Campo</TableCell>
-                    <TableCell>Valor Anterior</TableCell>
-                    <TableCell>Valor Nuevo</TableCell>
+                    <TableCell sx={{ color: "white" }}>Campo</TableCell>
+                    <TableCell sx={{ color: "white" }}>
+                      Valor Anterior
+                    </TableCell>
+                    <TableCell sx={{ color: "white" }}>Valor Nuevo</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {change.values.map((value, valueIndex) => (
                     <TableRow
                       key={valueIndex}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      sx={{
+                        "&:last-child td, &:last-child th": { border: 0 },
+                      }}
                     >
-                      <TableCell>{value.field}</TableCell>
-                      <TableCell>{value.oldValue}</TableCell>
-                      <TableCell>{value.newValue}</TableCell>
+                      <TableCell sx={{ color: "white" }}>
+                        {value.field}
+                      </TableCell>
+                      <TableCell sx={{ color: "white" }}>
+                        {value.oldValue}
+                      </TableCell>
+                      <TableCell sx={{ color: "white" }}>
+                        {value.newValue}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -69,7 +81,7 @@ const ChangeAccordion = ({ changes }) => {
               if (user.id === change.user) {
                 return (
                   <Box sx={{ marginTop: 2 }} key={user.id}>
-                    <Typography variant="subtitle1">
+                    <Typography variant="subtitle1" color="white">
                       Usuario: {user.name} {user.lastName}
                     </Typography>
                   </Box>

@@ -62,6 +62,7 @@ const FormPrinter = () => {
     selectFromResult: ({ data }) => ({
       printer: data?.entities[params.id],
     }),
+    skip: !params.id,
   });
 
   useTitle(

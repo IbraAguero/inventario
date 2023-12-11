@@ -14,6 +14,7 @@ import monitorRoutes from "./routes/monitor.routes.js";
 import peripheralRoutes from "./routes/peripheral.routes.js";
 import networkRoutes from "./routes/network.routes.js";
 import computerRoutes from "./routes/computer.routes.js";
+import statisticsRoutes from "./routes/statistics.routes.js";
 import makersRoutes from "./routes/maker.routes.js";
 import modelsRoutes from "./routes/model.routes.js";
 import typesRoutes from "./routes/type.routes.js";
@@ -56,6 +57,7 @@ app.use("/impresoras", printerRoutes);
 app.use("/perifericos", peripheralRoutes);
 app.use("/redes", networkRoutes);
 app.use("/computadoras", computerRoutes);
+app.use("/estadisticas", statisticsRoutes);
 //app.use('/notes', noteRoutes);
 
 /* app.all('*', (req, res) => {

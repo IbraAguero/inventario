@@ -20,6 +20,7 @@ const MoreInfoNetwork = () => {
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
 
   const params = useParams();
   const { isAuthenticated } = useAuth();
@@ -84,7 +85,12 @@ const MoreInfoNetwork = () => {
                 gap: 4,
               }}
             >
-              <Typography variant="h5" gutterBottom align="center">
+              <Typography
+                variant="h5"
+                gutterBottom
+                align="center"
+                color={textColor}
+              >
                 Información del Periferico
               </Typography>
               <Grid container spacing={2} textAlign="center">
@@ -105,7 +111,12 @@ const MoreInfoNetwork = () => {
                   </Grid>
                 ))}
               </Grid>
-              <Typography variant="h5" gutterBottom align="center">
+              <Typography
+                variant="h5"
+                gutterBottom
+                align="center"
+                color={textColor}
+              >
                 Historial de cambios
               </Typography>
               {network?.changes && network?.changes?.length > 0 ? (

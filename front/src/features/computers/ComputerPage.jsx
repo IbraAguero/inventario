@@ -1,22 +1,38 @@
-import { Box, Button, Typography, debounce, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  debounce,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import useTitle from "../../hooks/useTitle";
 import { tokens } from "../../theme";
 import TableComputer from "./TableComputer";
 import ButtonMoreMenu from "../../components/ButtonMoreMenu";
-import { useGetComputersQuery } from "./computersApiSlice";
+import {
+  useDeleteComputerMutation,
+  useGetComputersQuery,
+} from "./computersApiSlice";
 import { useGridApiRef } from "@mui/x-data-grid";
 import { useMemo, useState } from "react";
 import { useModal } from "../../context/ModalContext";
 import { Link, useLocation } from "react-router-dom";
 import StyledSearchInput from "../../components/styledComponents/StyledSearchInput";
+import AddIcon from "@mui/icons-material/Add";
+import GetAppIcon from "@mui/icons-material/GetApp";
 
 const ComputerPage = () => {
   useTitle("Computadoras | Inventario");
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const colors = tokens(theme.palette.mode);
   const { openModal } = useModal();
   const location = useLocation();
+
+  const [deleteComputer] = useDeleteComputerMutation();
 
   const columns = [
     {
@@ -141,7 +157,7 @@ const ComputerPage = () => {
           <ButtonMoreMenu
             id={id}
             name={nroinventario}
-            //deleteAction={deletePrinter}
+            deleteAction={deleteComputer}
           />
         );
       },
@@ -210,16 +226,17 @@ const ComputerPage = () => {
           flex={1}
         >
           <Box display="flex" alignItems="center" gap={2}>
-            <Typography variant="h3" fontWeight="600">
-              Computadoras
-            </Typography>
+            {!isMobile && (
+              <Typography variant="h3" fontWeight="600">
+                Computadoras
+              </Typography>
+            )}
             <Button
               component={Link}
               to="agregar"
               onClick={openModal}
               state={{ background: location }}
               variant="contained"
-              size="small"
               color="primary"
             >
               Agregar

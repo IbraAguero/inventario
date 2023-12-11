@@ -1,15 +1,16 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  mode: 'dark',
+  mode: localStorage.getItem("mode") || "dark",
 };
 
 export const globalSlice = createSlice({
-  name: 'global',
+  name: "global",
   initialState,
   reducers: {
     setMode: (state) => {
-      state.mode = state.mode === 'light' ? 'dark' : 'light';
+      state.mode = state.mode === "light" ? "dark" : "light";
+      localStorage.setItem("mode", state.mode);
     },
   },
 });

@@ -1,6 +1,6 @@
-import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
+import { createSelector, createEntityAdapter } from "@reduxjs/toolkit";
 
-import { apiSlice } from '../../app/api/apiSlice';
+import { apiSlice } from "../../app/api/apiSlice";
 
 const usersAdapter = createEntityAdapter({});
 
@@ -9,7 +9,7 @@ const initialState = usersAdapter.getInitialState();
 export const usersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query({
-      query: () => '/usuarios',
+      query: () => "/usuarios",
       transformResponse: (responseData) => {
         const loadedPrinters = responseData.map((user) => {
           user.id = user._id;
@@ -20,24 +20,36 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       providesTags: (result, error, arg) => {
         if (result?.ids) {
           return [
-            { type: 'User', id: 'LIST' },
-            ...result.ids.map((id) => ({ type: 'User', id })),
+            { type: "User", id: "LIST" },
+            ...result.ids.map((id) => ({ type: "User", id })),
           ];
-        } else return [{ type: 'User', id: 'LIST' }];
+        } else return [{ type: "User", id: "LIST" }];
       },
     }),
     createUser: builder.mutation({
       query: (newUser) => ({
-        url: '/usuarios',
-        method: 'POST',
+        url: "/usuarios",
+        method: "POST",
         body: newUser,
       }),
-      invalidatesTags: [{ type: 'User', id: 'LIST' }],
+      invalidatesTags: [{ type: "User", id: "LIST" }],
+    }),
+    updateUser: builder.mutation({
+      query: (updateUser) => ({
+        url: `/usuarios/${updateUser.id}`,
+        method: "PUT",
+        body: updateUser,
+      }),
+      invalidatesTags: [{ type: "User", id: "LIST" }],
     }),
   }),
 });
 
-export const { useGetUsersQuery, useCreateUserMutation } = usersApiSlice;
+export const {
+  useGetUsersQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+} = usersApiSlice;
 
 export const selectUsersResult = usersApiSlice.endpoints.getPrinters.select();
 

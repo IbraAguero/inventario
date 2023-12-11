@@ -7,15 +7,39 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { StyledDialog } from "./styledComponents/StyledDialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../theme";
 import SelectInput from "@mui/material/Select/SelectInput";
 import SelectFieldCustom from "./fields/SelectFieldCustom";
-import CpuForm from "../features/computers/Forms/CpuForm";
+import { useFormContext } from "react-hook-form";
+import { useGetOptionsQuery } from "../app/api/optionsApiSlice";
+import FormComponent from "./FormComponent";
 
-const ComponentList = ({ title, value }) => {
+const ComponentList = ({ title, name, url }) => {
   const [modalAdd, setModalAdd] = useState(false);
+  const [valueName, setValueName] = useState("");
+  const { watch, setValue } = useFormContext();
+  const value = watch(name);
+
+  const { data, error, isLoading } = useGetOptionsQuery(`computadoras/${url}`, {
+    skip: !value,
+  });
+
+  console.log(data);
+
+  useEffect(() => {
+    if (value) {
+      const filterValue = data?.find((cpu) => cpu._id === value);
+
+      setValueName(`${filterValue?.maker?.name} ${filterValue?.model}`);
+    }
+  }, [data, value]);
+
+  const deleteComponent = () => {
+    setValue(name, "");
+    setValueName("");
+  };
 
   const openModalAdd = () => {
     setModalAdd(true);
@@ -23,16 +47,22 @@ const ComponentList = ({ title, value }) => {
   const closeModalAdd = () => {
     setModalAdd(false);
   };
+
   return (
     <>
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography variant="h6" align="center">
-          <span style={{ fontWeight: "bold" }}>{title}:</span> {value}
+          <span style={{ fontWeight: "bold" }}>{title}:</span> {valueName}
         </Typography>
         <Box display="flex" gap={0.5}>
           {value ? (
             <>
-              <Button variant="contained" size="small" color="inherit">
+              <Button
+                variant="contained"
+                size="small"
+                color="inherit"
+                onClick={openModalAdd}
+              >
                 Editar
               </Button>
               <Button
@@ -40,6 +70,7 @@ const ComponentList = ({ title, value }) => {
                 color="error"
                 size="small"
                 style={{ maxWidth: "36px", minWidth: "36px" }}
+                onClick={deleteComponent}
               >
                 <DeleteIcon sx={{ padding: 0 }} />
               </Button>
@@ -50,8 +81,12 @@ const ComponentList = ({ title, value }) => {
             </Button>
           )}
         </Box>
-        <CpuForm
+        <FormComponent
           title={title}
+          name={name}
+          url={url}
+          data={data}
+          value={value}
           modalAdd={modalAdd}
           closeModalAdd={closeModalAdd}
         />

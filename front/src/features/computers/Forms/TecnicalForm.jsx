@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useTheme } from "@mui/material";
 import { TextFieldCustom } from "../../../components/fields/TextFieldCustom";
 import { useFormContext } from "react-hook-form";
 
@@ -6,9 +6,18 @@ const TecnicalForm = ({ formField }) => {
   const { nroInventario, nroSerie } = formField;
   const { watch, setValue } = useFormContext();
 
+  const theme = useTheme();
+  const textColor = theme.palette.mode === "light" ? "black" : "white";
+
   return (
     <>
-      <Typography variant="h5" gutterBottom align="center" mb="2rem">
+      <Typography
+        variant="h5"
+        gutterBottom
+        align="center"
+        mb="2rem"
+        color={textColor}
+      >
         Informacion Tecnica
       </Typography>
       <Grid container spacing={3}>

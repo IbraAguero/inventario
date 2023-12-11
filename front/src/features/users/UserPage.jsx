@@ -1,23 +1,23 @@
-import { useTheme } from '@emotion/react';
-import useTitle from '../../hooks/useTitle';
-import { tokens } from '../../theme';
-import { useModal } from '../../context/ModalContext';
-import { Link, useLocation } from 'react-router-dom';
-import { Box, Button, Typography } from '@mui/material';
-import { useGetUsersQuery } from './usersApiSlice';
-import TableUser from './TableUser';
-import ButtonMoreMenu from '../../components/ButtonMoreMenu';
-import ButtonMoreMenuUser from './ButtonMoreMenuUser';
+import { useTheme } from "@emotion/react";
+import useTitle from "../../hooks/useTitle";
+import { tokens } from "../../theme";
+import { useModal } from "../../context/ModalContext";
+import { Link, useLocation } from "react-router-dom";
+import { Box, Button, Typography } from "@mui/material";
+import { useGetUsersQuery } from "./usersApiSlice";
+import TableUser from "./TableUser";
+import ButtonMoreMenu from "../../components/ButtonMoreMenu";
+import ButtonMoreMenuUser from "./ButtonMoreMenuUser";
 
 const UserPage = () => {
-  useTitle('Usuarios | Inventario');
+  useTitle("Usuarios | Inventario");
 
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { openModal } = useModal();
   const location = useLocation();
 
-  const { data, error, isError, isLoading } = useGetUsersQuery('usersList', {
+  const { data, error, isError, isLoading } = useGetUsersQuery("usersList", {
     pollingInterval: 30000,
     refetchOnFocus: true,
   });
@@ -26,38 +26,38 @@ const UserPage = () => {
 
   const columns = [
     {
-      field: 'name',
-      headerName: 'Nombre',
-      headerAlign: 'center',
-      align: 'center',
+      field: "name",
+      headerName: "Nombre",
+      headerAlign: "center",
+      align: "center",
       flex: 1,
     },
     {
-      field: 'lastName',
-      headerName: 'Apellido',
-      headerAlign: 'center',
-      align: 'center',
+      field: "lastName",
+      headerName: "Apellido",
+      headerAlign: "center",
+      align: "center",
       flex: 1,
     },
     {
-      field: 'email',
-      headerName: 'Correo',
-      headerAlign: 'center',
-      align: 'center',
+      field: "email",
+      headerName: "Correo",
+      headerAlign: "center",
+      align: "center",
       flex: 2,
     },
     {
-      field: 'rol',
-      headerName: 'Rol',
+      field: "rol",
+      headerName: "Rol",
       flex: 1,
-      headerAlign: 'center',
-      align: 'center',
+      headerAlign: "center",
+      align: "center",
     },
     {
-      field: 'active',
-      headerName: 'Activo',
-      headerAlign: 'center',
-      align: 'center',
+      field: "active",
+      headerName: "Activo",
+      headerAlign: "center",
+      align: "center",
       renderCell: ({ row: { active } }) => {
         return (
           <Box
@@ -70,25 +70,25 @@ const UserPage = () => {
               active ? colors.greenAccent[600] : colors.grey[700]
             }
           >
-            {active ? 'Activo' : 'Inactivo'}
+            {active ? "Activo" : "Inactivo"}
           </Box>
         );
       },
     },
 
     {
-      field: 'acciones',
-      headerName: '',
+      field: "acciones",
+      headerName: "",
       sortable: false,
       disableExport: true,
       disableColumnMenu: true,
-      align: 'center',
+      align: "center",
       width: 40,
-      renderCell: ({ row: { id, username, active } }) => {
+      renderCell: ({ row: { id, name, active } }) => {
         return (
           <ButtonMoreMenuUser
             id={id}
-            name={username}
+            name={name}
             state={active}
             //deleteAction={deletePrinter}
           />
@@ -130,7 +130,6 @@ const UserPage = () => {
               onClick={openModal}
               state={{ background: location }}
               variant="contained"
-              size="small"
               color="primary"
             >
               Agregar

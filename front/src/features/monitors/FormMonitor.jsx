@@ -31,7 +31,7 @@ import {
   useUpdateMonitorMutation,
 } from "./monitorsApiSlice";
 
-const { formField } = monitorFormModel;
+const { formField, formId } = monitorFormModel;
 
 const steps = ["Informacion Tecnica", "Informacion Adicional"];
 
@@ -205,8 +205,8 @@ const FormMonitor = () => {
             {activeStep === steps.length ? (
               <h5>Formulario Enviado</h5>
             ) : (
-              <FormProvider {...methods}>
-                <form onSubmit={onSubmit}>
+              <FormProvider {...methods} key={formId}>
+                <form onSubmit={onSubmit} key={formId}>
                   {_renderStepContent(activeStep)}
                   <Box
                     display="flex"

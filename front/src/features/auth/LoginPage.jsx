@@ -6,24 +6,9 @@ import { useLoginMutation, useSendLogoutMutation } from "./authApiSlice";
 import usePersist from "../../hooks/usePersist";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm, Controller, FormProvider } from "react-hook-form";
-import {
-  Alert,
-  Box,
-  Checkbox,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  InputAdornment,
-  InputLabel,
-  Link,
-  OutlinedInput,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { useForm, FormProvider } from "react-hook-form";
+import { Alert, Box, Checkbox, Link, Typography } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useTheme } from "@emotion/react";
 import { tokens } from "../../theme";
 import useTitle from "../../hooks/useTitle";
@@ -43,14 +28,10 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-
-  const [showPassword, setShowPassword] = useState(false);
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const textColor = theme.palette.mode === "light" ? "primary" : "white";
 
   const methods = useForm({
     resolver: yupResolver(schema),
@@ -58,7 +39,6 @@ const LoginPage = () => {
   });
 
   const {
-    control,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
@@ -70,17 +50,6 @@ const LoginPage = () => {
 
   // Inicializa el valor 'persist' desde localStorage o en 'false' si no se encuentra
   const [persist, setPersist] = usePersist();
-
-  /* const onSubmit = async (data) => {
-    try {
-      const { accessToken } = await login(data).unwrap();
-      dispatch(setCredentials({ accessToken }));
-      reset();
-      navigate('/dash');
-    } catch (err) {
-      // Manejar errores
-    }
-  }; */
 
   const [sendLogout] = useSendLogoutMutation();
 
@@ -118,7 +87,7 @@ const LoginPage = () => {
       alignItems="center"
       justifyContent="center"
       minHeight="100vh"
-      bgcolor={colors.primary}
+      bgcolor={colors.primary[900]}
     >
       <Box
         minWidth={400}
@@ -126,14 +95,19 @@ const LoginPage = () => {
         pt={5}
         boxShadow={8}
         borderRadius={5}
-        bgcolor={colors.primary[700]}
+        bgcolor={colors.bgTable}
         width={{ xs: "10", md: "8", lg: "4" }}
       >
         <Box textAlign="center" mb={4}>
-          <Typography variant="h2" component="h1" fontWeight={700}>
+          <Typography
+            variant="h2"
+            component="h1"
+            fontWeight={700}
+            color={textColor}
+          >
             Bienvenido!
           </Typography>
-          <Typography variant="h6" component="small">
+          <Typography variant="h6" component="small" color={textColor}>
             ingrese para continuar
           </Typography>
         </Box>

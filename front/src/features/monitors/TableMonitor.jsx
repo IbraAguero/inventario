@@ -1,10 +1,11 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 
 const TableMonitor = ({ data, columns, apiRef, isLoading }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
@@ -52,6 +53,17 @@ const TableMonitor = ({ data, columns, apiRef, isLoading }) => {
       <DataGrid
         apiRef={apiRef}
         columns={columns}
+        columnVisibilityModel={
+          isMobile
+            ? {
+                nroserie: false,
+                createdAt: false,
+                updatedAt: false,
+                model: false,
+                maker: false,
+              }
+            : undefined
+        }
         rows={data || []}
         density="compact"
         rowSelection={false}

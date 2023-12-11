@@ -1,69 +1,78 @@
-import { DataGrid } from '@mui/x-data-grid';
-import { Box, useTheme } from '@mui/material';
-import { tokens } from '../../theme';
+import { DataGrid } from "@mui/x-data-grid";
+import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { tokens } from "../../theme";
 
 const TableUser = ({ data, header, apiRef, isLoading }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Box
       height="100%"
       width="100%"
       sx={{
-        '& .MuiDataGrid-root': {
-          border: 'none',
+        "& .MuiDataGrid-root": {
+          border: "none",
         },
-        '& .MuiDataGrid-cell': {
+        "& .MuiDataGrid-cell": {
           //borderBottom: 'none',
         },
-        '& .lugar-column--cell': {
+        "& .lugar-column--cell": {
           //color: colors.greenAccent[500],
         },
-        '& .MuiDataGrid-columnHeaders': {
-          borderTop: 'none',
+        "& .MuiDataGrid-columnHeaders": {
+          borderTop: "none",
           backgroundColor: colors.blueAccent[900],
-          borderBottom: 'none',
-          borderRadius: '15px',
+          borderBottom: "none",
+          borderRadius: "15px",
         },
-        '& .MuiDataGrid-virtualScroller': {
+        "& .MuiDataGrid-virtualScroller": {
           //backgroundColor: colors.primary[500],
         },
-        '& .MuiDataGrid-footerContainer': {
-          borderTop: 'none',
+        "& .MuiDataGrid-footerContainer": {
+          borderTop: "none",
         },
-        '& .MuiCheckbox-root': {
+        "& .MuiCheckbox-root": {
           //color: `${colors.greenAccent[200]} !important`,
         },
-        '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+        "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
           //color: `${colors.grey[400]} !important`,
         },
-        '& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus': {
-          outline: 'none !important',
+        "& .MuiDataGrid-columnHeader:focus, .MuiDataGrid-cell:focus": {
+          outline: "none !important",
         },
-        '& .MuiDataGrid-cell:focus-within': {
-          outline: 'none !important',
+        "& .MuiDataGrid-cell:focus-within": {
+          outline: "none !important",
         },
       }}
     >
       <DataGrid
         apiRef={apiRef}
         columns={header}
+        columnVisibilityModel={
+          isMobile
+            ? {
+                email: false,
+                rol: false,
+              }
+            : undefined
+        }
         rows={data}
         density="compact"
         rowSelection={false}
         loading={isLoading}
         sx={{
-          '@media print': {
-            '.MuiDataGrid-main': {
-              width: 'fit-content',
-              fontSize: '12px',
-              height: 'fit-content',
-              overflow: 'visible',
-              color: '#000',
+          "@media print": {
+            ".MuiDataGrid-main": {
+              width: "fit-content",
+              fontSize: "12px",
+              height: "fit-content",
+              overflow: "visible",
+              color: "#000",
             },
-            '*': {
-              color: '#000',
+            "*": {
+              color: "#000",
             },
 
             //marginBottom: 400,

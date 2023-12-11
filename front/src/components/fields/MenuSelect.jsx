@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   DialogActions,
@@ -22,8 +21,6 @@ import {
   useAddOptionMutation,
   useDeleteOptionMutation,
   useEditOptionMutation,
-  useGetOptionQuery,
-  useGetOptionsQuery,
   useLazyGetOptionQuery,
 } from "../../app/api/optionsApiSlice";
 import { StyledDialog } from "../styledComponents/StyledDialog";
@@ -46,14 +43,6 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
   const { getValues, setValue: setValueForm } = useFormContext();
 
   const value = getValues(name);
-
-  /* const {
-    data,
-    error: errData,
-    isLoading,
-  } = useGetOptionQuery(`${url}/${value}`, {
-    skip: !isEditing,
-  }); */
 
   const [trigger] = useLazyGetOptionQuery();
 
@@ -124,8 +113,15 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
     }
   };
 
+  useEffect(() => {
+    if (error || errorUpd) {
+      enqueueSnackbar(error?.data?.message || errorUpd?.data?.message, {
+        variant: "error",
+      });
+    }
+  }, [error, errorUpd]);
+
   const onSubmit = handleSubmit(async (values) => {
-    console.log(values);
     if (isEditing) {
       await editOption({
         url,
@@ -148,14 +144,6 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
       }
     }
   }, [isSuccess, isUpdSuccess]);
-
-  /* useEffect(() => {
-    if (errorDel) {
-      enqueueSnackbar(errorDel?.data?.message, {
-        variant: 'error',
-      });
-    }
-  }, [errorDel]); */
 
   return (
     <>
@@ -228,15 +216,16 @@ const MenuSelect = ({ url, name, label, disabled, valuesForm }) => {
                     fullWidth
                     variant="outlined"
                     error={!!fieldState.error}
+                    autoComplete="off"
                     helperText={fieldState.error?.message}
                   />
                 )}
               />
               <DialogActions>
-                <Button onClick={closeModal}>Cancelar</Button>
-                <Button type="submit" variant="contained">
+                <Button variant="contained" onClick={onSubmit}>
                   {isEditing ? "Editar" : "Agregar"}
                 </Button>
+                <Button onClick={closeModal}>Cancelar</Button>
               </DialogActions>
             </Box>
           </form>
