@@ -1,17 +1,20 @@
-import { IconButton, MenuItem } from '@mui/material';
-import { useState } from 'react';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import FeedIcon from '@mui/icons-material/Feed';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { useConfirm } from 'material-ui-confirm';
-import { Link, useLocation } from 'react-router-dom';
-import { useModal } from '../context/ModalContext';
-import { StyledMenu } from './styledComponents/StyledMenu';
+import { IconButton, MenuItem } from "@mui/material";
+import { useState } from "react";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import FeedIcon from "@mui/icons-material/Feed";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { useConfirm } from "material-ui-confirm";
+import { Link, useLocation } from "react-router-dom";
+import { useModal } from "../context/ModalContext";
+import { StyledMenu } from "./styledComponents/StyledMenu";
+import useAuth from "../hooks/useAuth";
 
 const ButtonMoreMenu = ({ id, name, deleteAction }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+
+  const { isAdministrador, isTecnico } = useAuth();
 
   const { openModal } = useModal();
   const location = useLocation();
@@ -25,10 +28,6 @@ const ButtonMoreMenu = ({ id, name, deleteAction }) => {
     setAnchorEl(null);
   };
 
-  const handleMore = () => {
-    console.log(id);
-  };
-
   const handleDelete = async () => {
     try {
       await confirm({
@@ -36,7 +35,7 @@ const ButtonMoreMenu = ({ id, name, deleteAction }) => {
       });
       await deleteAction(id);
     } catch (error) {
-      console.log('Deletion cancelled.');
+      console.log("Deletion cancelled.");
     }
   };
 
@@ -55,19 +54,23 @@ const ButtonMoreMenu = ({ id, name, deleteAction }) => {
           <FeedIcon />
           Ver mas
         </MenuItem>
-        <MenuItem
-          component={Link}
-          to={`editar/${id}`}
-          onClick={openModal}
-          state={{ background: location }}
-        >
-          <EditIcon />
-          Editar
-        </MenuItem>
-        <MenuItem onClick={handleDelete}>
-          <DeleteIcon />
-          Eliminar
-        </MenuItem>
+        {(isAdministrador || isTecnico) && (
+          <>
+            <MenuItem
+              component={Link}
+              to={`editar/${id}`}
+              onClick={openModal}
+              state={{ background: location }}
+            >
+              <EditIcon />
+              Editar
+            </MenuItem>
+            <MenuItem onClick={handleDelete}>
+              <DeleteIcon />
+              Eliminar
+            </MenuItem>
+          </>
+        )}
       </StyledMenu>
     </>
   );

@@ -24,9 +24,11 @@ import {
   useDeleteNetworkMutation,
   useGetNetworksQuery,
 } from "./networksApiSlice";
+import useAuth from "../../hooks/useAuth";
 
 const NetworkPage = () => {
   useTitle("Redes | Inventario");
+  const { isAdministrador, isTecnico } = useAuth();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -235,16 +237,18 @@ const NetworkPage = () => {
                 Redes
               </Typography>
             )}
-            <Button
-              component={Link}
-              to="agregar"
-              onClick={openModal}
-              state={{ background: location }}
-              variant="contained"
-              color="primary"
-            >
-              Agregar
-            </Button>
+            {(isAdministrador || isTecnico) && (
+              <Button
+                component={Link}
+                to="agregar"
+                onClick={openModal}
+                state={{ background: location }}
+                variant="contained"
+                color="primary"
+              >
+                Agregar
+              </Button>
+            )}
           </Box>
           <Box display="flex" gap={1} alignItems="center">
             <StyledSearchInput

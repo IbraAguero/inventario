@@ -19,11 +19,11 @@ import { useMemo, useState } from "react";
 import { useModal } from "../../context/ModalContext";
 import { Link, useLocation } from "react-router-dom";
 import StyledSearchInput from "../../components/styledComponents/StyledSearchInput";
-import AddIcon from "@mui/icons-material/Add";
-import GetAppIcon from "@mui/icons-material/GetApp";
+import useAuth from "../../hooks/useAuth";
 
 const ComputerPage = () => {
   useTitle("Computadoras | Inventario");
+  const { isAdministrador, isTecnico } = useAuth();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -231,16 +231,18 @@ const ComputerPage = () => {
                 Computadoras
               </Typography>
             )}
-            <Button
-              component={Link}
-              to="agregar"
-              onClick={openModal}
-              state={{ background: location }}
-              variant="contained"
-              color="primary"
-            >
-              Agregar
-            </Button>
+            {(isAdministrador || isTecnico) && (
+              <Button
+                component={Link}
+                to="agregar"
+                onClick={openModal}
+                state={{ background: location }}
+                variant="contained"
+                color="primary"
+              >
+                Agregar
+              </Button>
+            )}
           </Box>
           <Box display="flex" gap={1} alignItems="center">
             <StyledSearchInput

@@ -9,9 +9,11 @@ import ComponentsForm from "./ComponentsForm";
 import RamDataGrid from "./RamDataGrid";
 import HddDataGrid from "./HddDataGrid";
 import GraphicCardDataGrid from "./GraphicCardDataGrid";
+import useAuth from "../../hooks/useAuth";
 
 const ComponentsPage = () => {
   useTitle("Componentes | Inventario");
+  const { isAdministrador, isTecnico } = useAuth();
 
   const [modal, setModal] = useState(false);
 
@@ -77,9 +79,13 @@ const ComponentsPage = () => {
           <Tab label="Disco Duro" {...a11yProps(3)} />
           <Tab label="Tarjeta Gráfica" {...a11yProps(4)} />
         </Tabs>
-        <Button size="small" variant="contained" onClick={openModal}>
-          Agregar
-        </Button>
+        {isAdministrador || isTecnico ? (
+          <Button size="small" variant="contained" onClick={openModal}>
+            Agregar
+          </Button>
+        ) : (
+          <Box></Box>
+        )}
       </Box>
       <Box
         bgcolor={colors.primary[700]}

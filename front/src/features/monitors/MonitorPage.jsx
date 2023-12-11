@@ -22,9 +22,11 @@ import ButtonMoreMenu from "../../components/ButtonMoreMenu";
 import StyledSearchInput from "../../components/styledComponents/StyledSearchInput";
 import TableMonitor from "./TableMonitor";
 import useTitle from "../../hooks/useTitle";
+import useAuth from "../../hooks/useAuth";
 
 const MonitorPage = () => {
   useTitle("Monitores | Inventario");
+  const { isAdministrador, isTecnico } = useAuth();
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -224,16 +226,18 @@ const MonitorPage = () => {
                 Monitores
               </Typography>
             )}
-            <Button
-              component={Link}
-              to="agregar"
-              onClick={openModal}
-              state={{ background: location }}
-              variant="contained"
-              color="primary"
-            >
-              Agregar
-            </Button>
+            {(isAdministrador || isTecnico) && (
+              <Button
+                component={Link}
+                to="agregar"
+                onClick={openModal}
+                state={{ background: location }}
+                variant="contained"
+                color="primary"
+              >
+                Agregar
+              </Button>
+            )}
           </Box>
           <Box display="flex" gap={1} alignItems="center">
             <StyledSearchInput
