@@ -97,11 +97,11 @@ const MoreInfoNetwork = () => {
                 {Object.entries({
                   "Nro. Inventario": network?.nroinventario,
                   "Nro. Serie": network?.nroserie,
-                  Fabricante: network?.maker.name,
-                  Tipo: network?.type.name,
-                  Modelo: network?.model.name,
-                  Lugar: network?.place.name,
-                  Estado: network?.state.name,
+                  Fabricante: network?.maker?.name,
+                  Tipo: network?.type?.name,
+                  Modelo: network?.model?.name,
+                  Lugar: network?.place?.name,
+                  Estado: network?.state?.name,
                   "Agregada por": network?.createdBy?.name,
                 }).map(([label, value]) => (
                   <Grid item xs={6} key={label}>

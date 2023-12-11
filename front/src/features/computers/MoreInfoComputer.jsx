@@ -103,13 +103,13 @@ const MoreInfoComputer = () => {
                   "Placa Madre": `${computer?.motherBoard?.maker?.name || ""} ${
                     computer?.motherBoard?.model || ""
                   }`,
-                  CPU: `${computer?.cpu.maker?.name || ""} ${
+                  CPU: `${computer?.cpu?.maker?.name || ""} ${
                     computer?.cpu?.model || ""
                   }`,
-                  RAM: `${computer?.ram.maker?.name || ""} ${
+                  RAM: `${computer?.ram?.maker?.name || ""} ${
                     computer?.ram?.capacity || ""
                   }`,
-                  HDD: `${computer?.hdd.maker?.name || ""} ${
+                  HDD: `${computer?.hdd?.maker?.name || ""} ${
                     computer?.hdd?.capacity || ""
                   }`,
                   "Tarjeta Grafica": `${

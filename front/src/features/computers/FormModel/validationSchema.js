@@ -4,15 +4,15 @@ const {
   formField: {
     nroInventario,
     nroSerie,
-    motherBoard,
     cpu,
     hdd,
     ram,
-    graphicCard,
     place,
     state,
     supplier,
     order,
+    motherBoard,
+    graphicCard,
   },
 } = computerFormModel;
 
@@ -24,20 +24,22 @@ export default [
     [nroSerie.name]: Yup.string().required(`${nroSerie.requiredErrorMsg}`),
   }),
   Yup.object().shape({
-    [motherBoard.name]: Yup.string().required(
-      `${motherBoard.requiredErrorMsg}`
-    ),
     [cpu.name]: Yup.string().required(`${cpu.requiredErrorMsg}`),
     [ram.name]: Yup.string().required(`${ram.requiredErrorMsg}`),
     [hdd.name]: Yup.string().required(`${hdd.requiredErrorMsg}`),
-    [graphicCard.name]: Yup.string().required(
+    /* [graphicCard.name]: Yup.string().required(
       `${graphicCard.requiredErrorMsg}`
-    ),
+    ), */
+    /* [motherBoard.name]: Yup.string().required(
+      `${motherBoard.requiredErrorMsg}`
+    ), */
   }),
   Yup.object().shape({
     [place.name]: Yup.string().required(`${place.requiredErrorMsg}`),
     [state.name]: Yup.string().required(`${place.requiredErrorMsg}`),
-    [supplier.name]: Yup.string().required(`${supplier.requiredErrorMsg}`),
-    [order.name]: Yup.string().required(`${order.requiredErrorMsg}`),
+    [supplier.name]: Yup.string()
+      .required(`${supplier.requiredErrorMsg}`)
+      .optional(),
+    [order.name]: Yup.string().required(`${order.requiredErrorMsg}`).optional(),
   }),
 ];

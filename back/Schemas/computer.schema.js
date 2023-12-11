@@ -20,21 +20,24 @@ export const computerSchema = z.object({
     })
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {
       message: "CPU inválido (no es un ObjectId válido)",
-    }),
+    })
+    .optional(),
   hdd: z
     .string({
       required_error: "El disco duro es requerido",
     })
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {
       message: "Disco duro inválido (no es un ObjectId válido)",
-    }),
+    })
+    .optional(),
   ram: z
     .string({
       required_error: "La ram es requerida",
     })
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {
       message: "RAM inválida (no es un ObjectId válido)",
-    }),
+    })
+    .optional(),
   graphicCard: z
     .string()
     .refine((value) => mongoose.Types.ObjectId.isValid(value), {

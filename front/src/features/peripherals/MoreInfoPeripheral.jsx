@@ -97,11 +97,11 @@ const MoreInfoPeripheral = () => {
                 {Object.entries({
                   "Nro. Inventario": peripheral?.nroinventario,
                   "Nro. Serie": peripheral?.nroserie,
-                  Fabricante: peripheral?.maker.name,
-                  Tipo: peripheral?.type.name,
-                  Modelo: peripheral?.model.name,
-                  Lugar: peripheral?.place.name,
-                  Estado: peripheral?.state.name,
+                  Fabricante: peripheral?.maker?.name,
+                  Tipo: peripheral?.type?.name,
+                  Modelo: peripheral?.model?.name,
+                  Lugar: peripheral?.place?.name,
+                  Estado: peripheral?.state?.name,
                   "Agregada por": peripheral?.createdBy?.name,
                 }).map(([label, value]) => (
                   <Grid item xs={6} key={label}>

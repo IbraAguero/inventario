@@ -97,11 +97,11 @@ const MoreInfo = () => {
                 {Object.entries({
                   "Nro. Inventario": printer?.nroinventario,
                   "Nro. Serie": printer?.nroserie,
-                  Fabricante: printer?.maker.name,
-                  Tipo: printer?.type.name,
-                  Modelo: printer?.model.name,
-                  Lugar: printer?.place.name,
-                  Estado: printer?.state.name,
+                  Fabricante: printer?.maker?.name,
+                  Tipo: printer?.type?.name,
+                  Modelo: printer?.model?.name,
+                  Lugar: printer?.place?.name,
+                  Estado: printer?.state?.name,
                   "Agregada por": printer?.createdBy?.name,
                 }).map(([label, value]) => (
                   <Grid item xs={6} key={label}>

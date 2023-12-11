@@ -97,11 +97,11 @@ const MoreInfoMonitor = () => {
                 {Object.entries({
                   "Nro. Inventario": monitor?.nroinventario,
                   "Nro. Serie": monitor?.nroserie,
-                  Fabricante: monitor?.maker.name,
-                  Tipo: monitor?.type.name,
-                  Modelo: monitor?.model.name,
-                  Lugar: monitor?.place.name,
-                  Estado: monitor?.state.name,
+                  Fabricante: monitor?.maker?.name,
+                  Tipo: monitor?.type?.name,
+                  Modelo: monitor?.model?.name,
+                  Lugar: monitor?.place?.name,
+                  Estado: monitor?.state?.name,
                   "Agregada por": monitor?.createdBy?.name,
                 }).map(([label, value]) => (
                   <Grid item xs={6} key={label}>
